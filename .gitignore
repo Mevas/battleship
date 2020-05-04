@@ -19,7 +19,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+#*.dll
 
 # Fortran module files
 *.mod
@@ -143,3 +143,6 @@ _deps
 
 # End of https://www.gitignore.io/api/c++,cmake,clion
 .idea
+/lib/SFML/examples/
+/lib/SFML/doc/
+!/lib/SFML/bin/
