@@ -12,3 +12,8 @@ unsigned Coordinate::X() const {
 unsigned Coordinate::Y() const {
     return this->y;
 }
+
+std::ostream &operator<<(std::ostream &output, const Coordinate &C) {
+    output << "(" << C.X() << ", " << C.Y() << ")";
+    return output;
+}

@@ -14,6 +14,10 @@ public:
     void updateKeybinds(const double &deltaTime) override;
 
     void render(sf::RenderTarget *target) override;
+
+private:
+    Player *player1;
+    Player *player2;
 };
 
 

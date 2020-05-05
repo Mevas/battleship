@@ -1,6 +1,7 @@
 #ifndef BATTLESHIP_COORDINATE_H
 #define BATTLESHIP_COORDINATE_H
 
+#include <ostream>
 
 class Coordinate {
 public:
@@ -10,6 +11,7 @@ public:
 
     [[nodiscard]] unsigned Y() const;
 
+    friend std::ostream &operator<<( std::ostream &output, const Coordinate &C );
 private:
     unsigned x;
     unsigned y;

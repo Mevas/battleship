@@ -13,7 +13,7 @@ public:
     unsigned attack();
 
 private:
-    unsigned size = 9;
+    unsigned size;
     std::vector<Ship> ships;
 };
 

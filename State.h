@@ -11,6 +11,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+#include "Player.h"
+
 class State {
 public:
     explicit State(sf::RenderWindow *window);

@@ -1,6 +1,8 @@
+#include <iostream>
 #include "Board.h"
 
 Board::Board() {
+    this->size = 9;
     this->addShip(Coordinate(5, 5), 2, 0);
 }
 
