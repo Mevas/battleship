@@ -1,14 +1,10 @@
 #ifndef BATTLESHIP_BOARD_H
 #define BATTLESHIP_BOARD_H
 
-#include <iostream>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-
+#include "Coordinate.h"
 #include "Ship.h"
+
+class Ship;
 
 class Board {
 public:
@@ -21,6 +17,11 @@ public:
     void update();
 
     void render(sf::RenderTarget *target);
+
+    float getStartX() const;
+
+    float getStartY() const;
+
 private:
     unsigned playerNumber;
     unsigned size;
@@ -29,7 +30,6 @@ private:
     float startY;
 
     void drawGrid(sf::RenderTarget *target) const;
-
 };
 
 

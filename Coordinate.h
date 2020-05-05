@@ -1,7 +1,13 @@
 #ifndef BATTLESHIP_COORDINATE_H
 #define BATTLESHIP_COORDINATE_H
 
-#include <ostream>
+#include <iostream>
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+
 
 class Coordinate {
 public:

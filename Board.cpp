@@ -41,7 +41,7 @@ void Board::addShip(Coordinate head, unsigned length, unsigned rotation) {
         }
     }
 
-    this->ships.emplace_back(coords);
+    this->ships.emplace_back(coords, this);
 }
 
 unsigned Board::attack() {
@@ -54,19 +54,32 @@ void Board::update() {
 
 void Board::render(sf::RenderTarget *target) {
     this->drawGrid(target);
+
+    for (auto ship : this->ships) {
+        ship.render(target);
+    }
 }
 
 void Board::drawGrid(sf::RenderTarget *target) const {
+    auto rect = sf::RectangleShape(sf::Vector2f(50.f, 50.f));
+    const auto border = 1.f;
+
     for(auto i = 0; i < this->size; ++i) {
         for(auto j = 0; j < this->size; ++j) {
-            auto rect = sf::RectangleShape(sf::Vector2f(50.f, 50.f));
-            const auto border = 1.f;
             rect.setPosition(this->startX + border + i * 51, this->startY + border + j * 51);
-            rect.setFillColor(sf::Color(255, 255, 255, 20));
-            rect.setOutlineColor(sf::Color::White);
+            rect.setFillColor(sf::Color(0, 0, 255, 100));
+            rect.setOutlineColor(sf::Color(0, 0, 255, 128));
             rect.setOutlineThickness(border);
 
             target->draw(rect);
         }
     }
+}
+
+float Board::getStartX() const {
+    return this->startX;
+}
+
+float Board::getStartY() const {
+    return this->startY;
 }
