@@ -1,9 +1,19 @@
 #include "State.h"
 
-State::State() {
-
+State::State(sf::RenderWindow *window) {
+    this->window = window;
+    this->wantsToQuit = false;
 }
 
-State::~State() {
 
+State::~State() = default;
+
+void State::checkForQuit() {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        this->wantsToQuit = true;
+    }
+}
+
+const bool &State::getWantsToQuit() const {
+    return this->wantsToQuit;
 }

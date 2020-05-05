@@ -1,0 +1,20 @@
+#ifndef BATTLESHIP_GAMESTATE_H
+#define BATTLESHIP_GAMESTATE_H
+
+#include "../State.h"
+
+class GameState : public State {
+public:
+    explicit GameState(sf::RenderWindow *window);
+
+    ~GameState() override;
+
+    void update(const double &deltaTime) override;
+
+    void updateKeybinds(const double &deltaTime) override;
+
+    void render(sf::RenderTarget *target) override;
+};
+
+
+#endif //BATTLESHIP_GAMESTATE_H

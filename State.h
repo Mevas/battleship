@@ -2,6 +2,9 @@
 #define BATTLESHIP_STATE_H
 
 #include <vector>
+#include <stack>
+#include <map>
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
@@ -10,16 +13,24 @@
 
 class State {
 public:
-    State();
+    explicit State(sf::RenderWindow *window);
 
     virtual ~State();
 
-    virtual void update() = 0;
+    [[nodiscard]] const bool &getWantsToQuit() const;
 
-    virtual void render() = 0;
+    virtual void checkForQuit();
+
+    virtual void update(const double &deltaTime) = 0;
+
+    virtual void updateKeybinds(const double &deltaTime) = 0;
+
+    virtual void render(sf::RenderTarget *target) = 0;
 
 private:
+    sf::RenderWindow *window;
     std::vector<sf::Texture> textures;
+    bool wantsToQuit;
 };
 
 

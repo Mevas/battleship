@@ -1,7 +1,7 @@
 #ifndef BATTLESHIP_GAME_H
 #define BATTLESHIP_GAME_H
 
-#include "State.h"
+#include "./States/GameState.h"
 
 class Game {
 public:
@@ -19,6 +19,7 @@ public:
 
     void run();
 
+    void end();
 private:
     sf::RenderWindow *window;
     sf::Event event;
@@ -26,7 +27,11 @@ private:
     sf::Clock deltaTimeClock;
     double deltaTime;
 
+    std::stack<State *> states;
+
     void init();
+    void initWindow();
+    void initStates();
 };
 
 
