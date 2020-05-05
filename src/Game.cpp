@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Game.h"
+#include "../include/Game.h"
 
 Game::Game() {
     this->init();

@@ -1,4 +1,4 @@
-#include "GameState.h"
+#include "../include/GameState.h"
 
 GameState::GameState(sf::RenderWindow *window) : State(window) {
     this->player1 = new Player(1);

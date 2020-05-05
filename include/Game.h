@@ -1,7 +1,7 @@
 #ifndef BATTLESHIP_GAME_H
 #define BATTLESHIP_GAME_H
 
-#include "./States/GameState.h"
+#include "GameState.h"
 
 class Game {
 public:

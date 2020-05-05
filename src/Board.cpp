@@ -1,4 +1,4 @@
-#include "Board.h"
+#include "../include/Board.h"
 
 Board::Board(unsigned player) {
     this->size = 9;

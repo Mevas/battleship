@@ -1,8 +1,8 @@
 #ifndef BATTLESHIP_GAMESTATE_H
 #define BATTLESHIP_GAMESTATE_H
 
-#include "../State.h"
-#include "../Player.h"
+#include "State.h"
+#include "Player.h"
 
 class GameState : public State {
 public:

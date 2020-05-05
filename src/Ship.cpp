@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Ship.h"
+#include "../include/Ship.h"
 
 Ship::Ship(std::vector<Coordinate> coords, Board *parent) {
     this->parent = parent;
