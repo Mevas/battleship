@@ -31,7 +31,13 @@ void Game::render() {
 
 void Game::run() {
     while(this->window->isOpen()) {
+        this->updateDeltaTime();
+
         this->update();
         this->render();
     }
+}
+
+void Game::updateDeltaTime() {
+    this->deltaTime = this->deltaTimeClock.restart().asSeconds();
 }

@@ -11,6 +11,7 @@ public:
     Game();
     virtual ~Game();
 
+    void updateDeltaTime();
     void updateSFMLEvent();
     void update();
     void render();
@@ -18,6 +19,9 @@ public:
 private:
     sf::RenderWindow *window;
     sf::Event event;
+
+    sf::Clock deltaTimeClock;
+    double deltaTime;
 
     void init();
 };
