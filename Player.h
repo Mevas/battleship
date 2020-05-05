@@ -6,12 +6,18 @@
 
 class Player {
 public:
-    Player();
+    explicit Player(unsigned player);
     virtual ~Player();
 
     void fire(Coordinate coords);
+
+    void update();
+
+    void render(sf::RenderTarget *target);
+
 private:
     Board *board;
+    unsigned playerNumber;
 };
 
 

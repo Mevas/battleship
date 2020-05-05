@@ -2,6 +2,7 @@
 #define BATTLESHIP_GAMESTATE_H
 
 #include "../State.h"
+#include "../Player.h"
 
 class GameState : public State {
 public:

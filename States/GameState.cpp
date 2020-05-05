@@ -1,8 +1,8 @@
 #include "GameState.h"
 
 GameState::GameState(sf::RenderWindow *window) : State(window) {
-    this->player1 = new Player();
-    this->player2 = new Player();
+    this->player1 = new Player(1);
+    this->player2 = new Player(2);
 }
 
 GameState::~GameState() {
@@ -19,5 +19,6 @@ void GameState::updateKeybinds(const double &deltaTime) {
 }
 
 void GameState::render(sf::RenderTarget *target) {
-
+    this->player1->render(target);
+    this->player2->render(target);
 }

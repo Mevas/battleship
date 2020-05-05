@@ -1,7 +1,8 @@
 #include "Player.h"
 
-Player::Player() {
-    this->board = new Board();
+Player::Player(unsigned player) {
+    this->board = new Board(player);
+    this->playerNumber = player;
 }
 
 Player::~Player() {
@@ -10,4 +11,12 @@ Player::~Player() {
 
 void Player::fire(Coordinate coords) {
 
+}
+
+void Player::update() {
+
+}
+
+void Player::render(sf::RenderTarget *target) {
+    this->board->render(target);
 }

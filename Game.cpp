@@ -11,7 +11,7 @@ void Game::init() {
 }
 
 void Game::initWindow() {
-    this->window = new sf::RenderWindow(sf::VideoMode(640, 480), "Battleship");
+    this->window = new sf::RenderWindow(sf::VideoMode(460, 970), "Battleship");
 }
 
 void Game::initStates() {
