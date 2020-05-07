@@ -13,7 +13,7 @@ find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
 # Define sources and executable
 set(EXECUTABLE_NAME "battleship")
-add_executable(${EXECUTABLE_NAME} main.cpp src/Game.cpp include/Game.h src/State.cpp include/State.h src/GameState.cpp include/GameState.h src/Coordinate.cpp include/Coordinate.h src/Ship.cpp include/Ship.h src/Board.cpp include/Board.h src/Player.cpp include/Player.h)
+add_executable(${EXECUTABLE_NAME} main.cpp src/Game.cpp include/Game.h src/State.cpp include/State.h src/GameState.cpp include/GameState.h src/Coordinate.cpp include/Coordinate.h src/Ship.cpp include/Ship.h src/Board.cpp include/Board.h src/Player.cpp include/Player.h src/Globals.cpp include/Globals.h)
 
 
 target_link_libraries(battleship sfml-system sfml-window sfml-graphics sfml-network sfml-audio)

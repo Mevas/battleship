@@ -27,8 +27,10 @@ public:
 
     virtual void render(sf::RenderTarget *target) = 0;
 
-private:
+protected:
     sf::RenderWindow *window;
+
+private:
     std::vector<sf::Texture> textures;
     bool wantsToQuit;
 };

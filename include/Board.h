@@ -14,7 +14,7 @@ public:
 
     unsigned attack();
 
-    void update();
+    void update(sf::RenderWindow *window);
 
     void render(sf::RenderTarget *target);
 

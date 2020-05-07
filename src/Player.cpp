@@ -13,8 +13,8 @@ void Player::fire(Coordinate coords) {
 
 }
 
-void Player::update() {
-
+void Player::update(sf::RenderWindow *window) {
+    this->board->update(window);
 }
 
 void Player::render(sf::RenderTarget *target) {

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Ship.h"
+#include "../include/Globals.h"
 
 Ship::Ship(std::vector<Coordinate> coords, Board *parent) {
     this->parent = parent;
@@ -15,15 +16,15 @@ void Ship::update() {
 }
 
 void Ship::render(sf::RenderTarget *target) {
-    auto rect = sf::RectangleShape(sf::Vector2f(50.f, 50.f));
-    const auto border = 1.f;
-
+    auto rect = sf::RectangleShape(sf::Vector2f(globals::cellSize, globals::cellSize));
     for(auto cell : this->coords) {
-        rect.setPosition(this->parent->getStartX() + border + (cell.X() * 51),
-                         this->parent->getStartY() + border + (cell.Y() * 51));
+        rect.setPosition(this->parent->getStartX() + globals::borderWidth +
+                         (cell.X() * (globals::cellSize + globals::borderWidth)),
+                         this->parent->getStartY() + globals::borderWidth +
+                         (cell.Y() * (globals::cellSize + globals::borderWidth)));
         rect.setFillColor(sf::Color(80, 80, 80, 255));
         rect.setOutlineColor(sf::Color::White);
-        rect.setOutlineThickness(border);
+        rect.setOutlineThickness(globals::borderWidth);
 
         target->draw(rect);
     }

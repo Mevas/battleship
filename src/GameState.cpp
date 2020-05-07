@@ -12,6 +12,8 @@ GameState::~GameState() {
 
 void GameState::update(const double &deltaTime) {
     this->updateKeybinds(deltaTime);
+    this->player1->update(this->window);
+    this->player2->update(this->window);
 }
 
 void GameState::updateKeybinds(const double &deltaTime) {

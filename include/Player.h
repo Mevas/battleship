@@ -11,7 +11,7 @@ public:
 
     void fire(Coordinate coords);
 
-    void update();
+    void update(sf::RenderWindow *window);
 
     void render(sf::RenderTarget *target);
 
