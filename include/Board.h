@@ -27,22 +27,18 @@ public:
 
     float getStartY() const;
 
-protected:
-    sf::Vector2i mousePosWindow;
-public:
     const sf::Vector2i &getMousePosWindow() const;
 
     Player &getPlayer() const;
 
     unsigned int getSize() const;
 
-protected:
+private:
+    sf::Vector2i mousePosWindow;
     Player &player;
     unsigned size;
     float startX;
     float startY;
-
-private:
     std::vector<Ship *> ships;
     Shadow *shadow;
 

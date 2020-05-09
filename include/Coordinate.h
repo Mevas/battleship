@@ -19,7 +19,9 @@ public:
 
     friend std::ostream &operator<<(std::ostream &output, const Coordinate &C);
 
-    bool operator==(Coordinate const &rhs) const { return x == rhs.x && y == rhs.y; }
+    bool operator==(Coordinate const &rhs) const;
+
+    bool operator<(const Coordinate &rhs) const;
 
 private:
     int x;

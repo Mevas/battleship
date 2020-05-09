@@ -69,6 +69,7 @@ void Board::update(sf::Vector2i mousePosWindow) {
         }
 
         std::cout << cell << std::endl;
+        shadow->markHit(cell);
     }
 }
 
@@ -79,6 +80,8 @@ void Board::render(sf::RenderTarget *target) {
     for(auto ship : this->ships) {
         ship->render(target, hoveredCell);
     }
+
+    shadow->render(target);
 }
 
 void Board::drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const {
@@ -104,8 +107,8 @@ void Board::drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const {
 
 Coordinate Board::getHoveredCell() const {
     if(this->startX > this->mousePosWindow.x || this->startY > this->mousePosWindow.y ||
-       this->mousePosWindow.x > this->startX + globals::boardSize ||
-       this->mousePosWindow.y > this->startY + globals::boardSize) {
+       this->mousePosWindow.x > this->startX + globals::boardSize - 1 ||
+       this->mousePosWindow.y > this->startY + globals::boardSize - 1) {
         return Coordinate(-1, -1);
     }
     return Coordinate(int(this->mousePosWindow.x - this->startX) / (globals::cellSize + globals::borderWidth),
