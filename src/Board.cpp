@@ -30,6 +30,10 @@ Board::~Board() {
     delete this->shadow;
 }
 
+void Board::addShip(unsigned length) {
+    heldShips.push(new Ship(this, Cardinals::NORTH, length));
+}
+
 void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
     std::vector<Coordinate> coords;
     for(int i = 0; i < length; i++) {
@@ -49,7 +53,7 @@ void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
         }
     }
 
-    this->ships.push_back(new Ship(coords, this));
+    this->ships.push_back(new Ship(coords, this, direction));
 }
 
 HitTypes Board::attack(Coordinate cell) {
@@ -75,28 +79,11 @@ HitTypes Board::attack(Coordinate cell) {
 }
 
 void Board::update(sf::Vector2i mousePosWindow) {
-    this->mousePosWindow = mousePosWindow;
-    Coordinate cell = Coordinate(0, 0);
-
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        cell = this->getHoveredCell();
-        if(cell.X() < 0 || cell.Y() < 0) {
-            return;
-        }
-
-        auto result = attack(cell);
-        switch(result) {
-            case HitTypes::HIT:
-                std::cout << "Hit!\n";
-                break;
-            case HitTypes::MISSED:
-                std::cout << "Missed...\n";
-                break;
-            case HitTypes::DESTROYED:
-                std::cout << "Destroyed!\n";
-                break;
-        }
+    for(auto ship : ships) {
+        ship->update();
     }
+
+    this->mousePosWindow = mousePosWindow;
 }
 
 void Board::render(sf::RenderTarget *target) {
@@ -105,6 +92,10 @@ void Board::render(sf::RenderTarget *target) {
 
     for(auto ship : this->ships) {
         ship->render(target, hoveredCell);
+    }
+
+    if(!heldShips.empty()) {
+        heldShips.top()->render(target, hoveredCell, true);
     }
 
     shadow->render(target);
@@ -132,13 +123,14 @@ void Board::drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const {
 }
 
 Coordinate Board::getHoveredCell() const {
-    if(this->startX > this->mousePosWindow.x || this->startY > this->mousePosWindow.y ||
-       this->mousePosWindow.x > this->startX + globals::boardSize - 1 ||
-       this->mousePosWindow.y > this->startY + globals::boardSize - 1) {
+    auto cell = Coordinate(int(this->mousePosWindow.x - this->startX) / (globals::cellSize + globals::borderWidth),
+                           int(mousePosWindow.y - this->startY) / (globals::cellSize + globals::borderWidth));
+
+    if(!isInBounds(cell)) {
         return Coordinate(-1, -1);
     }
-    return Coordinate(int(this->mousePosWindow.x - this->startX) / (globals::cellSize + globals::borderWidth),
-                      int(mousePosWindow.y - this->startY) / (globals::cellSize + globals::borderWidth));
+
+    return cell;
 }
 
 float Board::getStartX() const {
@@ -160,3 +152,66 @@ Player &Board::getPlayer() const {
 unsigned int Board::getSize() const {
     return size;
 }
+
+std::stack<Ship *> &Board::getHeldShips() {
+    return heldShips;
+}
+
+std::vector<Ship *> &Board::getShips() {
+    return ships;
+}
+
+void Board::click() {
+    Coordinate cell = this->getHoveredCell();
+
+    if(cell.X() < 0 || cell.Y() < 0) {
+        return;
+    }
+
+//    Placing new ship behaviour
+    if(!heldShips.empty()) {
+        auto placed = heldShips.top()->place(cell);
+        if(!placed) {
+            return;
+        }
+
+        ships.push_back(heldShips.top());
+        heldShips.pop();
+
+        return;
+    }
+
+//    Attacking behaviour
+    auto result = attack(cell);
+    switch(result) {
+        case HitTypes::HIT:
+            std::cout << "Hit!\n";
+            break;
+        case HitTypes::MISSED:
+            std::cout << "Missed...\n";
+            break;
+        case HitTypes::DESTROYED:
+            std::cout << "Destroyed!\n";
+            break;
+    }
+}
+
+bool Board::isInBounds(Coordinate coords) const {
+    return coords.X() >= 0 && coords.Y() >= 0 && coords.X() < globals::boardNumCells &&
+           coords.Y() < globals::boardNumCells;
+}
+
+bool Board::wouldCollide(std::vector<Coordinate> coords) const {
+    for(auto ship : ships) {
+        for(auto cell : ship->getCoords()) {
+            for(auto coord : coords) {
+                if(coord == cell) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+

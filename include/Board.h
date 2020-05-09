@@ -1,6 +1,7 @@
 #ifndef BATTLESHIP_BOARD_H
 #define BATTLESHIP_BOARD_H
 
+#include <stack>
 #include "Coordinate.h"
 
 enum class Cardinals {
@@ -23,6 +24,8 @@ public:
 
     virtual ~Board();
 
+    void addShip(unsigned length);
+
     void addShip(Coordinate head, unsigned length, Cardinals direction);
 
     HitTypes attack(Coordinate cell);
@@ -41,6 +44,18 @@ public:
 
     unsigned int getSize() const;
 
+    std::stack<Ship *> &getHeldShips();
+
+    Coordinate getHoveredCell() const;
+
+    std::vector<Ship *> &getShips();
+
+    void click();
+
+    bool isInBounds(Coordinate coords) const;
+
+    bool wouldCollide(std::vector<Coordinate> coords) const;
+
 private:
     sf::Vector2i mousePosWindow;
     Player &player;
@@ -49,10 +64,9 @@ private:
     float startY;
     std::vector<Ship *> ships;
     Shadow *shadow;
+    std::stack<Ship *> heldShips;
 
     void drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const;
-
-    Coordinate getHoveredCell() const;
 };
 
 

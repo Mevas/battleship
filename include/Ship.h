@@ -7,15 +7,19 @@
 
 class Board;
 
+enum class Cardinals;
+
 class Ship {
 public:
-    Ship(std::vector<Coordinate> coords, Board *board);
+    Ship(Board *board, Cardinals direction, unsigned length);
+
+    Ship(std::vector<Coordinate> coords, Board *board, Cardinals direction);
 
     virtual ~Ship();
 
     void update();
 
-    void render(sf::RenderTarget *target, Coordinate hoveredCell);
+    void render(sf::RenderTarget *target, Coordinate hoveredCell, bool onCursor = false);
 
     const std::vector<Coordinate> &getCoords() const;
 
@@ -23,10 +27,15 @@ public:
 
     void markHit(Coordinate cell);
 
+    void rotate();
+
+    bool place(Coordinate center);
+
 private:
     std::vector<Coordinate> coords;
     std::set<Coordinate> hitCoords;
     int length;
+    Cardinals direction;
 
     Board *board;
 };

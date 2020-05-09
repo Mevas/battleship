@@ -11,6 +11,8 @@
 
 class Coordinate {
 public:
+    Coordinate();
+
     Coordinate(int x, int y);
 
     [[nodiscard]] int X() const;

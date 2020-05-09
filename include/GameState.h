@@ -16,6 +16,8 @@ public:
 
     void render(sf::RenderTarget *target) override;
 
+    Player *getPlayer1() const;
+
 private:
     Player *player1;
     Player *player2;

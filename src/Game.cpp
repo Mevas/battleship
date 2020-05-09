@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../include/Game.h"
 #include "../include/Globals.h"
+#include "../include/Board.h"
+#include "../include/Ship.h"
 
 Game::Game() {
     this->init();
@@ -13,8 +15,10 @@ void Game::init() {
 
 void Game::initWindow() {
     this->window = new sf::RenderWindow(
-            sf::VideoMode(globals::boardSize, globals::boardSize * 2 + globals::spaceBetweenBoards), "Battleship");
-    this->window->setFramerateLimit(30);
+            sf::VideoMode(globals::boardSize, globals::boardSize * 2 + globals::spaceBetweenBoards), "Battleship",
+            sf::Style::Close);
+    this->window->setFramerateLimit(165);
+    this->window->setKeyRepeatEnabled(false);
 }
 
 void Game::initStates() {
@@ -32,8 +36,24 @@ Game::~Game() {
 
 void Game::updateSFMLEvent() {
     while(this->window->pollEvent(event)) {
-        if(this->event.type == sf::Event::Closed)
+        if(this->event.type == sf::Event::Closed) {
             this->window->close();
+        }
+
+        if(this->event.type == sf::Event::KeyPressed) {
+            if(event.key.code == sf::Keyboard::R) {
+                auto heldShips = dynamic_cast<GameState *>(states.top())->getPlayer1()->getBoard()->getHeldShips();
+                if(!heldShips.empty()) {
+                    heldShips.top()->rotate();
+                }
+            }
+        }
+
+        if(this->event.type == sf::Event::MouseButtonPressed) {
+            if(event.mouseButton.button == sf::Mouse::Left) {
+                dynamic_cast<GameState *>(states.top())->getPlayer1()->getBoard()->click();
+            }
+        }
     }
 }
 
@@ -43,7 +63,7 @@ void Game::update() {
     if(!this->states.empty()) {
         this->states.top()->update(this->deltaTime);
 
-        if (this->states.top()->getWantsToQuit()) {
+        if(this->states.top()->getWantsToQuit()) {
             delete this->states.top();
             this->states.pop();
         }
