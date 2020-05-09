@@ -1,10 +1,10 @@
 #include "../include/Player.h"
 #include "../include/Board.h"
 
-Player::Player(sf::RenderWindow *window, unsigned player) {
+Player::Player(sf::RenderWindow *window, unsigned number) {
     this->window = window;
-    this->board = new Board(this->window, player);
-    this->playerNumber = player;
+    this->number = number;
+    this->board = new Board(*this);
 }
 
 Player::~Player() {
@@ -16,7 +16,7 @@ void Player::fire(Coordinate coords) {
 }
 
 void Player::update(sf::RenderWindow *window, sf::Vector2i mousePosWindow) {
-    this->board->update(window, mousePosWindow);
+    this->board->update(mousePosWindow);
     this->mousePosWindow = mousePosWindow;
 }
 
@@ -24,6 +24,19 @@ void Player::render(sf::RenderTarget *target) {
     this->board->render(target);
 }
 
-Board *Player::getBoard() {
-    return this->board;
+unsigned int Player::getNumber() const {
+    return number;
 }
+
+sf::RenderWindow *Player::getWindow() const {
+    return window;
+}
+
+const sf::Vector2i &Player::getMousePosWindow() const {
+    return mousePosWindow;
+}
+
+Board *Player::getBoard() const {
+    return board;
+}
+

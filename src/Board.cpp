@@ -1,13 +1,13 @@
 #include "../include/Board.h"
 #include "../include/Globals.h"
 #include "../include/Ship.h"
+#include "../include/Player.h"
+#include "../include/Shadow.h"
 
-Board::Board(sf::RenderWindow *window, unsigned player) {
-    this->window = window;
+Board::Board(Player &player) : player(player) {
     this->size = globals::boardNumCells;
-    this->playerNumber = player;
 
-    switch(this->playerNumber) {
+    switch(this->player.getNumber()) {
         case 1:
             this->startX = 0;
             this->startY = 0;
@@ -19,12 +19,15 @@ Board::Board(sf::RenderWindow *window, unsigned player) {
         default:
             return;
     }
+
+    this->shadow = new Shadow(*this);
 }
 
 Board::~Board() {
     for(auto &ship : this->ships) {
         delete ship;
     }
+    delete this->shadow;
 }
 
 void Board::addShip(Coordinate head, unsigned length, unsigned rotation) {
@@ -55,7 +58,7 @@ unsigned Board::attack() {
     return 0;
 }
 
-void Board::update(sf::RenderWindow *window, sf::Vector2i mousePosWindow) {
+void Board::update(sf::Vector2i mousePosWindow) {
     this->mousePosWindow = mousePosWindow;
     Coordinate cell = Coordinate(0, 0);
 
@@ -99,14 +102,6 @@ void Board::drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const {
     }
 }
 
-float Board::getStartX() const {
-    return this->startX;
-}
-
-float Board::getStartY() const {
-    return this->startY;
-}
-
 Coordinate Board::getHoveredCell() const {
     if(this->startX > this->mousePosWindow.x || this->startY > this->mousePosWindow.y ||
        this->mousePosWindow.x > this->startX + globals::boardSize ||
@@ -114,5 +109,25 @@ Coordinate Board::getHoveredCell() const {
         return Coordinate(-1, -1);
     }
     return Coordinate(int(this->mousePosWindow.x - this->startX) / (globals::cellSize + globals::borderWidth),
-                      int(this->mousePosWindow.y - this->startY) / (globals::cellSize + globals::borderWidth));
+                      int(mousePosWindow.y - this->startY) / (globals::cellSize + globals::borderWidth));
+}
+
+float Board::getStartX() const {
+    return startX;
+}
+
+float Board::getStartY() const {
+    return startY;
+}
+
+const sf::Vector2i &Board::getMousePosWindow() const {
+    return mousePosWindow;
+}
+
+Player &Board::getPlayer() const {
+    return player;
+}
+
+unsigned int Board::getSize() const {
+    return size;
 }

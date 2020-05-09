@@ -5,9 +5,13 @@
 
 class Ship;
 
+class Shadow;
+
+class Player;
+
 class Board {
 public:
-    explicit Board(sf::RenderWindow *window, unsigned player);
+    explicit Board(Player &player);
 
     virtual ~Board();
 
@@ -15,7 +19,7 @@ public:
 
     unsigned attack();
 
-    void update(sf::RenderWindow *window, sf::Vector2i mousePosWindow);
+    void update(sf::Vector2i mousePosWindow);
 
     void render(sf::RenderTarget *target);
 
@@ -23,14 +27,24 @@ public:
 
     float getStartY() const;
 
-private:
-    sf::RenderWindow *window;
+protected:
     sf::Vector2i mousePosWindow;
-    unsigned playerNumber;
+public:
+    const sf::Vector2i &getMousePosWindow() const;
+
+    Player &getPlayer() const;
+
+    unsigned int getSize() const;
+
+protected:
+    Player &player;
     unsigned size;
-    std::vector<Ship *> ships;
     float startX;
     float startY;
+
+private:
+    std::vector<Ship *> ships;
+    Shadow *shadow;
 
     void drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const;
 
