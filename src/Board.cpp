@@ -215,3 +215,8 @@ bool Board::wouldCollide(std::vector<Coordinate> coords) const {
     return false;
 }
 
+bool Board::isMouseInBounds() const {
+    return mousePosWindow.x > startX && mousePosWindow.y > startY && mousePosWindow.x < startX + globals::boardSize &&
+           mousePosWindow.y < startY + globals::boardSize;
+}
+

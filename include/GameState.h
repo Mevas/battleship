@@ -16,11 +16,17 @@ public:
 
     void render(sf::RenderTarget *target) override;
 
-    Player *getPlayer1() const;
+    Board *getClickedBoard() const;
+
+    Player *getPlayer();
+
+    Player *getEnemy();
+
+    bool isPlacingShips() const;
 
 private:
-    Player *player1;
-    Player *player2;
+    Player *player;
+    Player *enemy;
 };
 
 

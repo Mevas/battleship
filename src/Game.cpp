@@ -40,9 +40,11 @@ void Game::updateSFMLEvent() {
             this->window->close();
         }
 
+        auto gameState = dynamic_cast<GameState *>(states.top());
+
         if(this->event.type == sf::Event::KeyPressed) {
             if(event.key.code == sf::Keyboard::R) {
-                auto heldShips = dynamic_cast<GameState *>(states.top())->getPlayer1()->getBoard()->getHeldShips();
+                auto heldShips = gameState->getPlayer()->getBoard()->getHeldShips();
                 if(!heldShips.empty()) {
                     heldShips.top()->rotate();
                 }
@@ -51,7 +53,11 @@ void Game::updateSFMLEvent() {
 
         if(this->event.type == sf::Event::MouseButtonPressed) {
             if(event.mouseButton.button == sf::Mouse::Left) {
-                dynamic_cast<GameState *>(states.top())->getPlayer1()->getBoard()->click();
+                if(gameState->isPlacingShips()) {
+                    gameState->getPlayer()->getBoard()->click();
+                } else {
+                    gameState->getEnemy()->getBoard()->click();
+                }
             }
         }
     }

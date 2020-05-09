@@ -2,24 +2,24 @@
 #include "../include/Board.h"
 
 GameState::GameState(sf::RenderWindow *window) : State(window) {
-    this->player1 = new Player(this->window, 2);
-    this->player2 = new Player(this->window, 1);
-//    this->player1->getBoard()->addShip(Coordinate(5, 4), 5, Cardinals::EAST);
-    this->player1->getBoard()->addShip(5);
-    this->player1->getBoard()->addShip(3);
-//    this->player2->getBoard()->addShip(Coordinate(2, 4), 3, Cardinals::SOUTH);
+    this->player = new Player(this->window, 2);
+    this->enemy = new Player(this->window, 1);
+//    this->player->getBoard()->addShip(Coordinate(5, 4), 5, Cardinals::EAST);
+    this->player->getBoard()->addShip(5);
+    this->player->getBoard()->addShip(3);
+//    this->enemy->getBoard()->addShip(Coordinate(2, 4), 3, Cardinals::SOUTH);
 }
 
 GameState::~GameState() {
-    delete this->player1;
-    delete this->player2;
+    delete this->player;
+    delete this->enemy;
 };
 
 void GameState::update(const double &deltaTime) {
     this->updateInput(deltaTime);
     this->updateMousePosition();
-    this->player1->update(this->window, this->mousePosWindow);
-    this->player2->update(this->window, this->mousePosWindow);
+    this->player->update(this->window, this->mousePosWindow);
+    this->enemy->update(this->window, this->mousePosWindow);
 }
 
 void GameState::updateInput(const double &deltaTime) {
@@ -27,10 +27,24 @@ void GameState::updateInput(const double &deltaTime) {
 }
 
 void GameState::render(sf::RenderTarget *target) {
-    this->player1->render(target);
-    this->player2->render(target);
+    this->player->render(target);
+    this->enemy->render(target);
 }
 
-Player *GameState::getPlayer1() const {
-    return player1;
+Board *GameState::getClickedBoard() const {
+    if(player->getBoard()->isMouseInBounds())
+        return player->getBoard();
+    return enemy->getBoard();
+}
+
+Player *GameState::getPlayer() {
+    return player;
+}
+
+Player *GameState::getEnemy() {
+    return enemy;
+}
+
+bool GameState::isPlacingShips() const {
+    return !player->getBoard()->getHeldShips().empty();
 }

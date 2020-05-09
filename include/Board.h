@@ -52,6 +52,8 @@ public:
 
     void click();
 
+    bool isMouseInBounds() const;
+
     bool isInBounds(Coordinate coords) const;
 
     bool wouldCollide(std::vector<Coordinate> coords) const;
