@@ -1,7 +1,8 @@
 #include "../include/Board.h"
 #include "../include/Globals.h"
 
-Board::Board(unsigned player) {
+Board::Board(sf::RenderWindow *window, unsigned player) {
+    this->window = window;
     this->size = globals::boardNumCells;
     this->playerNumber = player;
 
@@ -17,8 +18,6 @@ Board::Board(unsigned player) {
         default:
             return;
     }
-
-    this->addShip(Coordinate(5, 5), 2, 0);
 }
 
 void Board::addShip(Coordinate head, unsigned length, unsigned rotation) {
@@ -49,28 +48,42 @@ unsigned Board::attack() {
     return 0;
 }
 
-void Board::update(sf::RenderWindow *window) {
+void Board::update(sf::RenderWindow *window, sf::Vector2i mousePosWindow) {
+    this->mousePosWindow = mousePosWindow;
+    Coordinate cell = Coordinate(0, 0);
+
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        sf::Vector2i position = sf::Mouse::getPosition(*(sf::Window *) window);
-        std::cout << position.x << ", " << position.y << std::endl;
+        cell = this->getHoveredCell();
+        if(cell.X() < 0 || cell.Y() < 0) {
+            return;
+        }
+
+        std::cout << cell << std::endl;
     }
 }
 
 void Board::render(sf::RenderTarget *target) {
-    this->drawGrid(target);
+    Coordinate hoveredCell = this->getHoveredCell();
+    this->drawGrid(target, hoveredCell);
 
     for(auto ship : this->ships) {
-        ship.render(target);
+        ship.render(target, hoveredCell);
     }
 }
 
-void Board::drawGrid(sf::RenderTarget *target) const {
+void Board::drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const {
     auto rect = sf::RectangleShape(sf::Vector2f(globals::cellSize, globals::cellSize));
+
     for(auto i = 0; i < this->size; ++i) {
         for(auto j = 0; j < this->size; ++j) {
             rect.setPosition(this->startX + globals::borderWidth + i * (globals::cellSize + globals::borderWidth),
                              this->startY + globals::borderWidth + j * (globals::cellSize + globals::borderWidth));
-            rect.setFillColor(sf::Color(0, 0, 255, 100));
+
+            if(hoveredCell.X() == i && hoveredCell.Y() == j)
+                rect.setFillColor(sf::Color(0, 0, 255, 160));
+            else
+                rect.setFillColor(sf::Color(0, 0, 255, 100));
+
             rect.setOutlineColor(sf::Color(0, 0, 255, 128));
             rect.setOutlineThickness(globals::borderWidth);
 
@@ -85,4 +98,24 @@ float Board::getStartX() const {
 
 float Board::getStartY() const {
     return this->startY;
+}
+
+Coordinate Board::getHoveredCell() const {
+    if(this->startX > this->mousePosWindow.x || this->startY > this->mousePosWindow.y ||
+       this->mousePosWindow.x > this->startX + globals::boardSize ||
+       this->mousePosWindow.y > this->startY + globals::boardSize) {
+        return Coordinate(-1, -1);
+    }
+    return Coordinate(int(this->mousePosWindow.x - this->startX) / (globals::cellSize + globals::borderWidth),
+                      int(this->mousePosWindow.y - this->startY) / (globals::cellSize + globals::borderWidth));
+}
+
+void Board::onClick(void (*f)()) const {
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+    }
+}
+
+void Board::test() {
+    std::cout << "HEY, HEY" << std::endl;
 }

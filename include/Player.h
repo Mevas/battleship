@@ -6,16 +6,21 @@
 
 class Player {
 public:
-    explicit Player(unsigned player);
+    explicit Player(sf::RenderWindow *window, unsigned player);
+
     virtual ~Player();
 
     void fire(Coordinate coords);
 
-    void update(sf::RenderWindow *window);
+    void update(sf::RenderWindow *window, sf::Vector2i mousePosWindow);
 
     void render(sf::RenderTarget *target);
 
+    Board *getBoard();
+
 private:
+    sf::RenderWindow *window;
+    sf::Vector2i mousePosWindow;
     Board *board;
     unsigned playerNumber;
 };

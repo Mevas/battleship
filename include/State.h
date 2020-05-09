@@ -23,12 +23,15 @@ public:
 
     virtual void update(const double &deltaTime) = 0;
 
-    virtual void updateKeybinds(const double &deltaTime) = 0;
+    virtual void updateInput(const double &deltaTime) = 0;
+
+    virtual void updateMousePosition();
 
     virtual void render(sf::RenderTarget *target) = 0;
 
 protected:
     sf::RenderWindow *window;
+    sf::Vector2i mousePosWindow;
 
 private:
     std::vector<sf::Texture> textures;

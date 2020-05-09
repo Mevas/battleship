@@ -14,6 +14,7 @@ void Game::init() {
 void Game::initWindow() {
     this->window = new sf::RenderWindow(
             sf::VideoMode(globals::boardSize, globals::boardSize * 2 + globals::spaceBetweenBoards), "Battleship");
+    this->window->setFramerateLimit(30);
 }
 
 void Game::initStates() {

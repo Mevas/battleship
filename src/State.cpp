@@ -5,7 +5,6 @@ State::State(sf::RenderWindow *window) {
     this->wantsToQuit = false;
 }
 
-
 State::~State() = default;
 
 void State::checkForQuit() {
@@ -16,4 +15,8 @@ void State::checkForQuit() {
 
 const bool &State::getWantsToQuit() const {
     return this->wantsToQuit;
+}
+
+void State::updateMousePosition() {
+    this->mousePosWindow = sf::Mouse::getPosition(*this->window);
 }

@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Coordinate.h"
-
 #include "Board.h"
 
 class Board;
@@ -16,7 +15,7 @@ public:
 
     void update();
 
-    void render(sf::RenderTarget *target);
+    void render(sf::RenderTarget *target, Coordinate hoveredCell);
 
 private:
     std::vector<Coordinate> coords;

@@ -1,8 +1,10 @@
 #include "../include/GameState.h"
 
 GameState::GameState(sf::RenderWindow *window) : State(window) {
-    this->player1 = new Player(1);
-    this->player2 = new Player(2);
+    this->player1 = new Player(this->window, 1);
+    this->player2 = new Player(this->window, 2);
+    this->player1->getBoard()->addShip(Coordinate(5, 4), 5, 1);
+    this->player2->getBoard()->addShip(Coordinate(2, 4), 3, 2);
 }
 
 GameState::~GameState() {
@@ -11,12 +13,13 @@ GameState::~GameState() {
 };
 
 void GameState::update(const double &deltaTime) {
-    this->updateKeybinds(deltaTime);
-    this->player1->update(this->window);
-    this->player2->update(this->window);
+    this->updateInput(deltaTime);
+    this->updateMousePosition();
+    this->player1->update(this->window, this->mousePosWindow);
+    this->player2->update(this->window, this->mousePosWindow);
 }
 
-void GameState::updateKeybinds(const double &deltaTime) {
+void GameState::updateInput(const double &deltaTime) {
     this->checkForQuit();
 }
 

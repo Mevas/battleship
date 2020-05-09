@@ -13,14 +13,17 @@ class Coordinate {
 public:
     Coordinate(int x, int y);
 
-    [[nodiscard]] unsigned X() const;
+    [[nodiscard]] int X() const;
 
-    [[nodiscard]] unsigned Y() const;
+    [[nodiscard]] int Y() const;
 
-    friend std::ostream &operator<<( std::ostream &output, const Coordinate &C );
+    friend std::ostream &operator<<(std::ostream &output, const Coordinate &C);
+
+    bool operator==(Coordinate const &rhs) const { return x == rhs.x && y == rhs.y; }
+
 private:
-    unsigned x;
-    unsigned y;
+    int x;
+    int y;
 };
 
 

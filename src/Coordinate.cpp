@@ -5,11 +5,11 @@ Coordinate::Coordinate(int x, int y) {
     this->y = y;
 }
 
-unsigned Coordinate::X() const {
+int Coordinate::X() const {
     return this->x;
 }
 
-unsigned Coordinate::Y() const {
+int Coordinate::Y() const {
     return this->y;
 }
 

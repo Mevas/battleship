@@ -8,13 +8,13 @@ class Ship;
 
 class Board {
 public:
-    explicit Board(unsigned player);
+    explicit Board(sf::RenderWindow *window, unsigned player);
 
     void addShip(Coordinate head, unsigned length, unsigned rotation);
 
     unsigned attack();
 
-    void update(sf::RenderWindow *window);
+    void update(sf::RenderWindow *window, sf::Vector2i mousePosWindow);
 
     void render(sf::RenderTarget *target);
 
@@ -23,13 +23,21 @@ public:
     float getStartY() const;
 
 private:
+    sf::RenderWindow *window;
+    sf::Vector2i mousePosWindow;
     unsigned playerNumber;
     unsigned size;
     std::vector<Ship> ships;
     float startX;
     float startY;
 
-    void drawGrid(sf::RenderTarget *target) const;
+    void drawGrid(sf::RenderTarget *target, Coordinate hoveredCell) const;
+
+    Coordinate getHoveredCell() const;
+
+    void onClick(void (*f)()) const;
+
+    void test();
 };
 
 

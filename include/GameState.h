@@ -12,7 +12,7 @@ public:
 
     void update(const double &deltaTime) override;
 
-    void updateKeybinds(const double &deltaTime) override;
+    void updateInput(const double &deltaTime) override;
 
     void render(sf::RenderTarget *target) override;
 

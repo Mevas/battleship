@@ -15,14 +15,18 @@ void Ship::update() {
 
 }
 
-void Ship::render(sf::RenderTarget *target) {
+void Ship::render(sf::RenderTarget *target, Coordinate hoveredCell) {
     auto rect = sf::RectangleShape(sf::Vector2f(globals::cellSize, globals::cellSize));
     for(auto cell : this->coords) {
         rect.setPosition(this->parent->getStartX() + globals::borderWidth +
                          (cell.X() * (globals::cellSize + globals::borderWidth)),
                          this->parent->getStartY() + globals::borderWidth +
                          (cell.Y() * (globals::cellSize + globals::borderWidth)));
-        rect.setFillColor(sf::Color(80, 80, 80, 255));
+        if(hoveredCell == cell)
+            rect.setFillColor(sf::Color(120, 120, 120, 255));
+        else
+            rect.setFillColor(sf::Color(80, 80, 80, 255));
+
         rect.setOutlineColor(sf::Color::White);
         rect.setOutlineThickness(globals::borderWidth);
 
