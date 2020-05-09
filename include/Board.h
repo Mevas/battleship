@@ -3,6 +3,14 @@
 
 #include "Coordinate.h"
 
+enum class Cardinals {
+    NORTH, EAST, SOUTH, WEST
+};
+
+enum class HitTypes {
+    HIT = 0, MISSED = 1, DESTROYED = 2, DENIED = 3
+};
+
 class Ship;
 
 class Shadow;
@@ -15,9 +23,9 @@ public:
 
     virtual ~Board();
 
-    void addShip(Coordinate head, unsigned length, unsigned rotation);
+    void addShip(Coordinate head, unsigned length, Cardinals direction);
 
-    unsigned attack();
+    HitTypes attack(Coordinate cell);
 
     void update(sf::Vector2i mousePosWindow);
 

@@ -45,3 +45,11 @@ void Shadow::render(sf::RenderTarget *target) {
         target->draw(rect);
     }
 }
+
+const std::set<Coordinate> &Shadow::getHit() const {
+    return hit;
+}
+
+const std::set<Coordinate> &Shadow::getMissed() const {
+    return missed;
+}

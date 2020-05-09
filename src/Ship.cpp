@@ -34,3 +34,15 @@ void Ship::render(sf::RenderTarget *target, Coordinate hoveredCell) {
         target->draw(rect);
     }
 }
+
+const std::vector<Coordinate> &Ship::getCoords() const {
+    return coords;
+}
+
+bool Ship::isDestroyed() {
+    return hitCoords.size() == length;
+}
+
+void Ship::markHit(Coordinate cell) {
+    hitCoords.insert(cell);
+}

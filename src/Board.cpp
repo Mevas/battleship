@@ -30,32 +30,48 @@ Board::~Board() {
     delete this->shadow;
 }
 
-void Board::addShip(Coordinate head, unsigned length, unsigned rotation) {
+void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
     std::vector<Coordinate> coords;
     for(int i = 0; i < length; i++) {
-        switch(rotation) {
-            case 0: // North
+        switch(direction) {
+            case Cardinals::NORTH:
                 coords.emplace_back(head.X(), head.Y() + i);
                 break;
-            case 1: // East
+            case Cardinals::EAST:
                 coords.emplace_back(head.X() - i, head.Y());
                 break;
-            case 2: // South
+            case Cardinals::SOUTH:
                 coords.emplace_back(head.X(), head.Y() - i);
                 break;
-            case 3: // West
+            case Cardinals::WEST:
                 coords.emplace_back(head.X() + i, head.Y());
                 break;
-            default:
-                continue;
         }
     }
 
     this->ships.push_back(new Ship(coords, this));
 }
 
-unsigned Board::attack() {
-    return 0;
+HitTypes Board::attack(Coordinate cell) {
+    if(shadow->getHit().count(cell) || shadow->getMissed().count(cell)) {
+        return HitTypes::DENIED;
+    }
+
+    for(auto ship : ships) {
+        for(auto shipCell : ship->getCoords()) {
+            if(cell == shipCell) {
+                shadow->markHit(cell);
+                ship->markHit(cell);
+                if(ship->isDestroyed()) {
+                    return HitTypes::DESTROYED;
+                }
+                return HitTypes::HIT;
+            }
+        }
+    }
+
+    shadow->markMissed(cell);
+    return HitTypes::MISSED;
 }
 
 void Board::update(sf::Vector2i mousePosWindow) {
@@ -68,8 +84,18 @@ void Board::update(sf::Vector2i mousePosWindow) {
             return;
         }
 
-        std::cout << cell << std::endl;
-        shadow->markHit(cell);
+        auto result = attack(cell);
+        switch(result) {
+            case HitTypes::HIT:
+                std::cout << "Hit!\n";
+                break;
+            case HitTypes::MISSED:
+                std::cout << "Missed...\n";
+                break;
+            case HitTypes::DESTROYED:
+                std::cout << "Destroyed!\n";
+                break;
+        }
     }
 }
 

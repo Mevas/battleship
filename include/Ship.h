@@ -2,6 +2,7 @@
 #define BATTLESHIP_SHIP_H
 
 #include <vector>
+#include <set>
 #include "Coordinate.h"
 
 class Board;
@@ -16,9 +17,15 @@ public:
 
     void render(sf::RenderTarget *target, Coordinate hoveredCell);
 
+    const std::vector<Coordinate> &getCoords() const;
+
+    bool isDestroyed();
+
+    void markHit(Coordinate cell);
+
 private:
     std::vector<Coordinate> coords;
-    std::vector<Coordinate> hitCoords;
+    std::set<Coordinate> hitCoords;
     int length;
 
     Board *board;
