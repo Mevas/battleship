@@ -1,8 +1,9 @@
 #ifndef BATTLESHIP_PLAYER_H
 #define BATTLESHIP_PLAYER_H
 
+#include "Coordinate.h"
 
-#include "Board.h"
+class Board;
 
 class Player {
 public:

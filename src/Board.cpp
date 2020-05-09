@@ -1,5 +1,6 @@
 #include "../include/Board.h"
 #include "../include/Globals.h"
+#include "../include/Ship.h"
 
 Board::Board(sf::RenderWindow *window, unsigned player) {
     this->window = window;
@@ -17,6 +18,12 @@ Board::Board(sf::RenderWindow *window, unsigned player) {
             break;
         default:
             return;
+    }
+}
+
+Board::~Board() {
+    for(auto &ship : this->ships) {
+        delete ship;
     }
 }
 
@@ -41,7 +48,7 @@ void Board::addShip(Coordinate head, unsigned length, unsigned rotation) {
         }
     }
 
-    this->ships.emplace_back(coords, this);
+    this->ships.push_back(new Ship(coords, this));
 }
 
 unsigned Board::attack() {
@@ -67,7 +74,7 @@ void Board::render(sf::RenderTarget *target) {
     this->drawGrid(target, hoveredCell);
 
     for(auto ship : this->ships) {
-        ship.render(target, hoveredCell);
+        ship->render(target, hoveredCell);
     }
 }
 
@@ -108,14 +115,4 @@ Coordinate Board::getHoveredCell() const {
     }
     return Coordinate(int(this->mousePosWindow.x - this->startX) / (globals::cellSize + globals::borderWidth),
                       int(this->mousePosWindow.y - this->startY) / (globals::cellSize + globals::borderWidth));
-}
-
-void Board::onClick(void (*f)()) const {
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-
-    }
-}
-
-void Board::test() {
-    std::cout << "HEY, HEY" << std::endl;
 }

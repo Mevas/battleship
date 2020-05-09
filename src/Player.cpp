@@ -1,4 +1,5 @@
 #include "../include/Player.h"
+#include "../include/Board.h"
 
 Player::Player(sf::RenderWindow *window, unsigned player) {
     this->window = window;

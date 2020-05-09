@@ -3,13 +3,12 @@
 
 #include <vector>
 #include "Coordinate.h"
-#include "Board.h"
 
 class Board;
 
 class Ship {
 public:
-    Ship(std::vector<Coordinate> coords, Board *parent);
+    Ship(std::vector<Coordinate> coords, Board *board);
 
     virtual ~Ship();
 
@@ -22,7 +21,7 @@ private:
     std::vector<Coordinate> hitCoords;
     int length;
 
-    Board *parent;
+    Board *board;
 };
 
 
