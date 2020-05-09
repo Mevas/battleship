@@ -17,7 +17,16 @@ private:
 public:
     void hostGame();
     void joinGame();
-    void sendPacket(sf::Packet packet);
+    void playGame();
+    void Attack();
+    void Defend();
+    void ResolveAttack();
+    ///
+    /// \param packet , address of the packet used to send data to server
+    void sendPacket(sf::Packet * packet);
+    ///
+    /// \param packet , address of the packet used to receive data from server
+    void receivePacket(sf::Packet * packet);
 };
 
 

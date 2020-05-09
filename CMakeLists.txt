@@ -12,7 +12,7 @@ find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
 # Define sources and executable
 set(EXECUTABLE_NAME "battleship_client")
-add_executable(${EXECUTABLE_NAME} main.cpp src/Server.cpp includes/Server.h src/Client.cpp includes/Client.h)
+add_executable(${EXECUTABLE_NAME} main.cpp src/Server.cpp includes/Server.h src/Client.cpp includes/Client.h includes/Constants.h)
 
 
 target_link_libraries(battleship_client sfml-system sfml-window sfml-graphics sfml-network sfml-audio)
