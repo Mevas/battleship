@@ -13,6 +13,13 @@ Server::Server() {
     std::cout << this->serverIp << std::endl;
 }
 
+Server & Server::getInstance()
+{
+    static Server    instance; // Guaranteed to be destroyed.
+    // Instantiated on first use.
+    return instance;
+}
+
 sf::IpAddress Server::getServerIp() {
     return this->serverIp;
 }
@@ -38,6 +45,8 @@ void Server::acceptHost() {
     packet << s;
 
     sendPacket(&clientHost, &packet);
+
+    startListeningGuest();
 }
 
 void Server::startListeningGuest() {

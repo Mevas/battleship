@@ -22,12 +22,11 @@ void Client::hostGame() {
     std::string s;
     double d;
 
-    this->server = new Server();
-    this->serverIp = server->getServerIp();
-    std::thread thListenHost(&Server::startListeningHost, server);
+    //this->server = new Server();
+    this->serverIp = Server::getInstance().getServerIp();
+    std::thread thListenHost(&Server::startListeningHost, &Server::getInstance());
 
     sf::Socket::Status status = socket.connect(this->serverIp, 53001);
-    thListenHost.join();
 
     if(status != sf::Socket::Done) {
         std::cout << "Connection to server couldn't be make\n";
@@ -38,15 +37,10 @@ void Client::hostGame() {
     packet >> s;
     std::cout << s << std::endl;
 
-    std::thread thListenGuest(&Server::startListeningGuest, server);
     receivePacket(&packet);
     packet >> s;
     std::cout << s << std::endl;
-    thListenGuest.join();
-
-    std::thread thGameLoop(&Server::gameLoop, server);
-    playGame();
-    thGameLoop.join();
+    thListenHost.join();
 }
 
 void Client::joinGame() {
@@ -69,7 +63,8 @@ void Client::joinGame() {
     s = "I am your Guest!";
     packetToSend << s;
     sendPacket(&packet);
-    playGame();
+
+    //playGame();
 }
 
 void Client::playGame() {

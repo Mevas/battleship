@@ -16,7 +16,10 @@ private:
     sf::TcpSocket clientHost;
     sf::TcpSocket clientGuest;
 public:
-    Server();
+    static Server& getInstance();
+
+    Server(Server const&)          = delete;
+    void operator=(Server const&)  = delete;
 
     sf::IpAddress getServerIp();
 

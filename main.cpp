@@ -21,8 +21,12 @@ int main() {
     std::cin >> action;
     if(action == 'H') {
         Client::getInstance().hostGame();
+        std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
+        Client::getInstance().playGame();
+        thGameLoop.join();
     } else {
         Client::getInstance().joinGame();
+        Client::getInstance().playGame();
     }
 
     std::cout << "Do you Love the game?";
