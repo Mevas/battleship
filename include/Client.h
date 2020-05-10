@@ -14,7 +14,15 @@ private:
     sf::TcpSocket socket;
     sf::IpAddress serverIp;
     Server *server;
+
+    Client() {}
+
 public:
+    static Client& getInstance();
+
+    Client(Client const&)          = delete;
+    void operator=(Client const&)  = delete;
+
     void hostGame();
 
     void joinGame();

@@ -13,15 +13,16 @@ int main() {
 
     game.run();
 
-    Client *client = new Client();
+    //Client *client = new Client();
+    //Client::getInstance();
 
     char action;
     std::cout << "Host game or Join Game?(H/J)\n";
     std::cin >> action;
     if(action == 'H') {
-        client->hostGame();
+        Client::getInstance().hostGame();
     } else {
-        client->joinGame();
+        Client::getInstance().joinGame();
     }
 
     std::cout << "Do you Love the game?";

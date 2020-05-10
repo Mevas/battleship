@@ -63,7 +63,6 @@ void Server::acceptGuest() {
     packet << s;
 
     sendPacket(&clientGuest, &packet);
-    //! ???? should receive
     receivePacket(&clientGuest, &packetToReceive);
 
     packetToReceive >> s;

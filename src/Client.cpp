@@ -7,7 +7,15 @@
 #include <iostream>
 #include <thread>
 
+Client & Client::getInstance()
+{
+    static Client    instance; // Guaranteed to be destroyed.
+    // Instantiated on first use.
+    return instance;
+}
+
 void Client::hostGame() {
+
     sf::Packet packet;
 
     sf::Uint16 x;

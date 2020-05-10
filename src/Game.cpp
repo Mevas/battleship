@@ -104,5 +104,5 @@ void Game::updateDeltaTime() {
 }
 
 void Game::end() {
-    std::cout << "Goodbye...";
+    std::cout << "Goodbye...\n";
 }
