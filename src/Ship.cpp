@@ -33,9 +33,30 @@ void Ship::render(sf::RenderTarget *target, Coordinate hoveredCell, bool onCurso
                 rect.setFillColor(sf::Color(120, 120, 120, 255));
         } else {
             auto mousePos = this->board->getMousePosWindow();
-            rect.setPosition(mousePos.x + (int(direction) % 2) * (i - int(length / 2)) *
+
+            int offsetX, offsetY;
+            switch(direction) {
+                case Cardinals::NORTH:
+                    offsetX = 0;
+                    offsetY = -1;
+                    break;
+                case Cardinals::EAST:
+                    offsetX = 1;
+                    offsetY = 0;
+                    break;
+                case Cardinals::SOUTH:
+                    offsetX = 0;
+                    offsetY = 1;
+                    break;
+                case Cardinals::WEST:
+                    offsetX = -1;
+                    offsetY = 0;
+                    break;
+            }
+
+            rect.setPosition(mousePos.x + offsetX * (i) *
                                           (globals::cellSize + globals::borderWidth) - globals::cellSize / 2,
-                             mousePos.y + (int(direction) % 2 - 1) * (i - int(length / 2)) *
+                             mousePos.y + offsetY * (i) *
                                           (globals::cellSize + globals::borderWidth) - globals::cellSize / 2);
         }
 
@@ -78,19 +99,19 @@ void Ship::rotate() {
 bool Ship::place(Coordinate center) {
     Coordinate cell;
     std::vector<Coordinate> coords;
-    for(int i = -length / 2; i <= length / 2; i++) {
+    for(int i = 0; i < length; i++) {
         switch(direction) {
             case Cardinals::NORTH:
-                cell = Coordinate(center.X(), center.Y() + i);
-                break;
-            case Cardinals::EAST:
-                cell = Coordinate(center.X() - i, center.Y());
-                break;
-            case Cardinals::SOUTH:
                 cell = Coordinate(center.X(), center.Y() - i);
                 break;
-            case Cardinals::WEST:
+            case Cardinals::EAST:
                 cell = Coordinate(center.X() + i, center.Y());
+                break;
+            case Cardinals::SOUTH:
+                cell = Coordinate(center.X(), center.Y() + i);
+                break;
+            case Cardinals::WEST:
+                cell = Coordinate(center.X() - i, center.Y());
                 break;
         }
 

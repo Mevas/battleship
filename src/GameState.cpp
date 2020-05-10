@@ -5,7 +5,7 @@ GameState::GameState(sf::RenderWindow *window) : State(window) {
     this->player = new Player(this->window, 2);
     this->enemy = new Player(this->window, 1);
 //    this->player->getBoard()->addShip(Coordinate(5, 4), 5, Cardinals::EAST);
-    this->player->getBoard()->addShip(5);
+    this->player->getBoard()->addShip(4);
     this->player->getBoard()->addShip(3);
 //    this->enemy->getBoard()->addShip(Coordinate(2, 4), 3, Cardinals::SOUTH);
 }

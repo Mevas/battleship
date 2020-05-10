@@ -38,6 +38,7 @@ void Game::updateSFMLEvent() {
     while(this->window->pollEvent(event)) {
         if(this->event.type == sf::Event::Closed) {
             this->window->close();
+            end();
         }
 
         auto gameState = dynamic_cast<GameState *>(states.top());
