@@ -3,6 +3,7 @@
 #include "../include/Ship.h"
 #include "../include/Player.h"
 #include "../include/Shadow.h"
+#include "../include/Client.h"
 
 Board::Board(Player &player) : player(player) {
     this->size = globals::boardNumCells;
@@ -60,19 +61,22 @@ HitTypes Board::attack(Coordinate cell) {
     if(shadow->getHit().count(cell) || shadow->getMissed().count(cell)) {
         return HitTypes::DENIED;
     }
-
-    for(auto ship : ships) {
-        for(auto shipCell : ship->getCoords()) {
-            if(cell == shipCell) {
-                shadow->markHit(cell);
-                ship->markHit(cell);
-                if(ship->isDestroyed()) {
-                    return HitTypes::DESTROYED;
-                }
-                return HitTypes::HIT;
-            }
-        }
-    }
+    std::cout << cell.X() << " " << cell.Y() << std::endl;
+    Client::getInstance().Attack(cell);
+    Client::getInstance().ResolveAttack();
+/// check is happening on the server side, should just update board here or in the resolveAttack() call
+//    for(auto ship : ships) {
+//        for(auto shipCell : ship->getCoords()) {
+//            if(cell == shipCell) {
+//                shadow->markHit(cell);
+//                ship->markHit(cell);
+//                if(ship->isDestroyed()) {
+//                    return HitTypes::DESTROYED;
+//                }
+//                return HitTypes::HIT;
+//            }
+//        }
+//    }
 
     shadow->markMissed(cell);
     return HitTypes::MISSED;

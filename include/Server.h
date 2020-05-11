@@ -6,6 +6,7 @@
 #define BATTLESHIP_CLIENT_SERVER_H
 
 #include <SFML/Network.hpp>
+#include "ServerBoard.h"
 
 const std::string SERVER_MESSAGE_PREFIX = "SERVER<<< ";
 
@@ -15,6 +16,10 @@ private:
     sf::TcpListener listener;
     sf::TcpSocket clientHost;
     sf::TcpSocket clientGuest;
+    ServerBoard * hostBoard;
+    ServerBoard * guestBoard;
+
+    Server();
 public:
     static Server& getInstance();
 

@@ -13,11 +13,11 @@ class Coordinate {
 public:
     Coordinate();
 
-    Coordinate(int x, int y);
+    Coordinate(short x, short y);
 
-    [[nodiscard]] int X() const;
+    [[nodiscard]] short X() const;
 
-    [[nodiscard]] int Y() const;
+    [[nodiscard]] short Y() const;
 
     friend std::ostream &operator<<(std::ostream &output, const Coordinate &C);
 
@@ -26,8 +26,8 @@ public:
     bool operator<(const Coordinate &rhs) const;
 
 private:
-    int x;
-    int y;
+    short x;
+    short y;
 };
 
 

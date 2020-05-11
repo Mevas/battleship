@@ -7,15 +7,17 @@
 
 
 #include <SFML/Network.hpp>
+#include <thread>
+#include <atomic>
 #include "Server.h"
 
 class Client {
 private:
     sf::TcpSocket socket;
     sf::IpAddress serverIp;
-    Server *server;
-
-    Client() {}
+    std::thread * defendThread;
+    std::atomic<bool> is_attacking{};
+    Client();
 
 public:
     static Client& getInstance();
@@ -29,11 +31,16 @@ public:
 
     void playGame();
 
-    void Attack();
+    void Attack(Coordinate cell);
 
     void Defend();
 
     void ResolveAttack();
+
+    void startDefendingThread();
+    ///
+    /// \return true if defendThread is finished
+    bool readyToAttack();
 
     ///
     /// \param packet , address of the packet used to send data to server

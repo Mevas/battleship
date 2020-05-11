@@ -4,12 +4,13 @@
 #include "../include/Constants.h"
 #include "../include/Server.h"
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include <thread>
 
 Server::Server() {
     this->serverIp = sf::IpAddress::getLocalAddress();
     //this->serverIp = "82.76.175.95";
+    this->hostBoard = new ServerBoard();
+    this->guestBoard = new ServerBoard();
     std::cout << this->serverIp << std::endl;
 }
 
@@ -80,11 +81,19 @@ void Server::acceptGuest() {
 }
 
 void Server::gameLoop() {
+    //TODO: swap hardcoded ships with real ships
+    hostBoard->addShip(Coordinate(0, 0), 3, Cardinals::SOUTH);
+    guestBoard->addShip(Coordinate(3, 3), 4, Cardinals::EAST);
+    guestBoard->addShip(Coordinate(2, 5), 2, Cardinals::SOUTH);
+
     sf::Packet packetAttacker;
     sf::Packet packetDefender;
     //TODO: randomize first move
     sf::TcpSocket *attacker = &this->clientHost;
     sf::TcpSocket *defender = &this->clientGuest;
+    ServerBoard *attackerBoard = this->hostBoard;
+    ServerBoard *defenderBoard = this->guestBoard;
+
     short message;
     bool continueLoop = true;
 
@@ -103,19 +112,19 @@ void Server::gameLoop() {
         switch(message) {
             case CLIENT_MSG_DISCONNECT: {
                 //TODO: inform defender, prepare to close server, break game loop
-                packetDefender << SERVER_MSG_END;
-                sendPacket(defender, &packetDefender);
+                //packetDefender << SERVER_MSG_END;
+                //sendPacket(defender, &packetDefender);
                 continueLoop = false;
                 break;
             }
             case CLIENT_ATTACK_COMMAND: {
                 short x, y;
-                bool shipHit = false;
                 packetAttacker >> x >> y;
                 packetAttacker.clear();
-                //TODO: see if defender have boat at position (x, y), return message, now just a placeHolder
-                packetAttacker << SERVER_ATTACK_RESOLVE << x << y << shipHit;
-                packetDefender << SERVER_HIT_RESOLVE << x << y << shipHit;
+                HitTypes hit = defenderBoard->attack(Coordinate(x, y));
+                std::cout << static_cast<int>(hit);
+                packetAttacker << SERVER_ATTACK_RESOLVE << x << y << hit;
+                packetDefender << SERVER_HIT_RESOLVE << x << y << hit;
                 std::thread thMessageAttacker(&Server::sendPacket, this, attacker, &packetAttacker);
                 sendPacket(defender, &packetDefender);
                 thMessageAttacker.join();

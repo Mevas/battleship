@@ -1,5 +1,6 @@
 #include "../include/GameState.h"
 #include "../include/Board.h"
+#include "../include/Client.h"
 
 GameState::GameState(sf::RenderWindow *window) : State(window) {
     this->player = new Player(this->window, 2);
@@ -18,6 +19,11 @@ GameState::~GameState() {
 void GameState::update(const double &deltaTime) {
     this->updateInput(deltaTime);
     this->updateMousePosition();
+    if(Client::getInstance().readyToAttack())
+    {
+        std::cout << "It's your turn to attack!\n";
+        //TODO(Alex): allow attacking
+    }
     this->player->update(this->window, this->mousePosWindow);
     this->enemy->update(this->window, this->mousePosWindow);
 }

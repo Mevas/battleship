@@ -2,16 +2,16 @@
 
 Coordinate::Coordinate() : x(0), y(0) {}
 
-Coordinate::Coordinate(int x, int y) {
+Coordinate::Coordinate(short x, short y) {
     this->x = x;
     this->y = y;
 }
 
-int Coordinate::X() const {
+short Coordinate::X() const {
     return this->x;
 }
 
-int Coordinate::Y() const {
+short Coordinate::Y() const {
     return this->y;
 }
 

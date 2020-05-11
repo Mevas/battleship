@@ -3,14 +3,7 @@
 
 #include <stack>
 #include "Coordinate.h"
-
-enum class Cardinals {
-    NORTH, EAST, SOUTH, WEST
-};
-
-enum class HitTypes {
-    HIT = 0, MISSED = 1, DESTROYED = 2, DENIED = 3
-};
+#include "Constants.h"
 
 class Ship;
 

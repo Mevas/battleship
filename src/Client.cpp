@@ -4,8 +4,15 @@
 
 #include "../include/Constants.h"
 #include "../include/Client.h"
+#include "../include/Game.h"
 #include <iostream>
 #include <thread>
+
+Client::Client()
+{
+    this->is_attacking = false;
+    this->defendThread = nullptr;
+}
 
 Client & Client::getInstance()
 {
@@ -74,34 +81,27 @@ void Client::playGame() {
     packet >> serverMessage;
     std::cout << serverMessage << std::endl;
     if(serverMessage == SERVER_MSG_FIRST_MOVE) {
-        Attack();
+        this->is_attacking = true;
     } else {
-        Defend();
+        startDefendingThread();
     }
 
     std::cout << "Game finished!\n";
 }
 
-void Client::Attack() {
-    short x, y;
+void Client::Attack(Coordinate cell) {
     char cmd;
     sf::Packet packetToSend;
-    std::cout << "Want to disconnect? (Y/N)\n";
-    std::cin >> cmd;
-    if(cmd == 'Y') {
-        //TODO: Actually disconnect...
-        packetToSend << CLIENT_MSG_DISCONNECT;
-        sendPacket(&packetToSend);
-        return;
-    }
-    std::cout << "It's your turn to attack!\nAttack coordinate x (1 - 9):\n";
-    std::cin >> x;
-    std::cout << "Attack coordinate y (1 - 9):\n";
-    std::cin >> y;
-    packetToSend << CLIENT_ATTACK_COMMAND << x << y;
+    //    std::cout << "Want to disconnect? (Y/N)\n";
+    //    std::cin >> cmd;
+//    if(cmd == 'Y') {
+//        //TODO: Actually disconnect...
+//        packetToSend << CLIENT_MSG_DISCONNECT;
+//        sendPacket(&packetToSend);
+//        return;
+//    }
+    packetToSend << CLIENT_ATTACK_COMMAND << cell.X() << cell.Y();
     sendPacket(&packetToSend);
-
-    ResolveAttack();
 }
 
 void Client::Defend() {
@@ -118,13 +118,11 @@ void Client::Defend() {
             return;
         }
         case SERVER_HIT_RESOLVE: {
-            bool shipHit;
+            HitTypes hit;
             short x, y;
-            packetToReceive >> x >> y >> shipHit;
-            //TODO: update board based on what info we got
-            std::cout << "You were hit at coord (" << x << ", " << y << "). It was a " << (shipHit ? "success" : "miss")
-                      << std::endl;
-            Attack();
+            packetToReceive >> x >> y >> hit;
+            //TODO(Alex): update board based on what info we got
+            std::cout << "You were hit at coord (" << x << ", " << y << "). It was a " << static_cast<int>(hit) << std::endl;
             break;
         }
         case SERVER_MSG_LOSE: {
@@ -137,6 +135,7 @@ void Client::Defend() {
     }
 }
 
+//return something like  HitTypes? Dunno...I think it's better for client obj to take action
 void Client::ResolveAttack() {
     short messageFromServer;
     sf::Packet packetToReceive;
@@ -149,13 +148,13 @@ void Client::ResolveAttack() {
             return;
         }
         case SERVER_ATTACK_RESOLVE: {
-            bool shipHit;
+            HitTypes hit;
             short x, y;
-            packetToReceive >> x >> y >> shipHit;
-            std::cout << "The attack at coord (" << x << ", " << y << ") was a " << (shipHit ? "success" : "miss")
-                      << std::endl;
-            //TODO: update board based on what info we got
-            Defend();
+            packetToReceive >> x >> y >> hit;
+            std::cout << "The attack at coord (" << x << ", " << y << ") was a " << static_cast<int>(hit) << std::endl;
+
+            //TODO(Alex): update board based on what info we got
+            startDefendingThread();
             break;
         }
         case SERVER_MSG_WIN: {
@@ -168,6 +167,31 @@ void Client::ResolveAttack() {
         }
     }
 
+}
+
+void Client::startDefendingThread(){
+    //TODO(Alex): prevent attacking
+    this->is_attacking = false;
+    this->defendThread = new std::thread([this] {
+        Defend();
+        is_attacking = true;
+    });
+}
+
+bool Client::readyToAttack()
+{
+    if(defendThread == nullptr) {
+        return false;
+    }
+
+    if(this->is_attacking == true) {
+        this->defendThread->join();
+        delete this->defendThread;
+        this->defendThread = nullptr;
+        return true;
+    }
+
+    return false;
 }
 
 void Client::sendPacket(sf::Packet *packet) {

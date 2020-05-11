@@ -9,10 +9,6 @@
 #include <SFML/Network.hpp>
 
 int main() {
-    Game game;
-
-    game.run();
-
     //Client *client = new Client();
     //Client::getInstance();
 
@@ -23,10 +19,17 @@ int main() {
         Client::getInstance().hostGame();
         std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
         Client::getInstance().playGame();
+        Game game;
+        game.run();
         thGameLoop.join();
     } else {
+        char now;
         Client::getInstance().joinGame();
         Client::getInstance().playGame();
+        std::cout<<"Say when...\n";
+        std::cin >> now;
+        Game game;
+        game.run();
     }
 
     std::cout << "Do you Love the game?";

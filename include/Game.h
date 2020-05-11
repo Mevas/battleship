@@ -2,6 +2,7 @@
 #define BATTLESHIP_GAME_H
 
 #include "GameState.h"
+#include "Client.h"
 
 class Game {
 public:
@@ -21,6 +22,7 @@ public:
 
     void end();
 private:
+
     sf::RenderWindow *window;
     sf::Event event;
 
