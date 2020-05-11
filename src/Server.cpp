@@ -141,6 +141,9 @@ void Server::gameLoop() {
         auto tmp = attacker;
         attacker = defender;
         defender = tmp;
+        auto tmpBoard = attackerBoard;
+        attackerBoard = defenderBoard;
+        defenderBoard = tmpBoard;
     }
 
     //TODO: disconnect clients, close server...
