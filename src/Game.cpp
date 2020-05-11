@@ -3,6 +3,7 @@
 #include "../include/Globals.h"
 #include "../include/Board.h"
 #include "../include/Ship.h"
+#include "../include/MenuState.h"
 
 Game::Game() {
     this->init();
@@ -22,7 +23,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-    this->states.push(new GameState(this->window));
+    this->states.push(new MenuState(this->window));
 }
 
 Game::~Game() {
@@ -41,27 +42,46 @@ void Game::updateSFMLEvent() {
             end();
         }
 
-        auto gameState = dynamic_cast<GameState *>(states.top());
+        updateGameEvents();
+        updateMenuEvents();
+    }
+}
 
-        if(this->event.type == sf::Event::KeyPressed) {
-            if(event.key.code == sf::Keyboard::R) {
-                auto heldShips = gameState->getPlayer()->getBoard()->getHeldShips();
-                if(!heldShips.empty()) {
-                    heldShips.top()->rotate();
-                }
-            }
-        }
+void Game::updateGameEvents() {
+    auto gameState = dynamic_cast<GameState *>(states.top());
 
-        if(this->event.type == sf::Event::MouseButtonPressed) {
-            if(event.mouseButton.button == sf::Mouse::Left) {
-                if(gameState->isPlacingShips()) {
-                    gameState->getPlayer()->getBoard()->click();
-                } else {
-                    gameState->getEnemy()->getBoard()->click();
-                }
+    if(!gameState) {
+        return;
+    }
+
+    if(this->event.type == sf::Event::KeyPressed) {
+        if(event.key.code == sf::Keyboard::R) {
+            auto heldShips = gameState->getPlayer()->getBoard()->getHeldShips();
+            if(!heldShips.empty()) {
+                heldShips.top()->rotate();
             }
         }
     }
+
+    if(this->event.type == sf::Event::MouseButtonPressed) {
+        if(event.mouseButton.button == sf::Mouse::Left) {
+            if(gameState->isPlacingShips()) {
+                gameState->getPlayer()->getBoard()->click();
+            } else {
+                gameState->getEnemy()->getBoard()->click();
+            }
+        }
+    }
+}
+
+void Game::updateMenuEvents() {
+    auto menuState = dynamic_cast<MenuState *>(states.top());
+
+    if(!menuState) {
+        return;
+    }
+
+
 }
 
 void Game::update() {

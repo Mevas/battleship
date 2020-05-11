@@ -13,19 +13,19 @@ int main() {
 
     game.run();
 
-    Client *client = new Client();
-
-    char action;
-    std::cout << "Host game or Join Game?(H/J)\n";
-    std::cin >> action;
-    if(action == 'H') {
-        client->hostGame();
-    } else {
-        client->joinGame();
-    }
-
-    std::cout << "Do you Love the game?";
-    std::cin >> action;
+//    Client *client = new Client();
+//
+//    char action;
+//    std::cout << "Host game or Join Game?(H/J)\n";
+//    std::cin >> action;
+//    if(action == 'H') {
+//        client->hostGame();
+//    } else {
+//        client->joinGame();
+//    }
+//
+//    std::cout << "Do you Love the game?";
+//    std::cin >> action;
 
     return 0;
 }

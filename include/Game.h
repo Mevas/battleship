@@ -13,6 +13,10 @@ public:
 
     void updateSFMLEvent();
 
+    void updateGameEvents();
+
+    void updateMenuEvents();
+
     void update();
 
     void render();
@@ -20,6 +24,7 @@ public:
     void run();
 
     void end();
+
 private:
     sf::RenderWindow *window;
     sf::Event event;
