@@ -19,7 +19,6 @@ void Game::initWindow() {
             sf::VideoMode(globals::boardSize, globals::boardSize * 2 + globals::spaceBetweenBoards), "Battleship",
             sf::Style::Close);
     this->window->setFramerateLimit(165);
-    this->window->setKeyRepeatEnabled(false);
 }
 
 void Game::initStates() {
@@ -81,7 +80,15 @@ void Game::updateMenuEvents() {
         return;
     }
 
+    if(this->event.type == sf::Event::TextEntered) {
+        menuState->getIpTextbox()->typedOn(this->event);
+    }
 
+    if(this->event.type == sf::Event::KeyPressed) {
+        if(event.key.code == sf::Keyboard::Return) {
+            menuState->getIpTextbox()->setIsFocused(false);
+        }
+    }
 }
 
 void Game::update() {

@@ -4,6 +4,7 @@
 
 #include "State.h"
 #include "Button.h"
+#include "Textbox.h"
 
 class MenuState : public State {
 public:
@@ -19,12 +20,18 @@ public:
 
     void render(sf::RenderTarget *target) override;
 
+    Button *getJoinBtn() const;
+
+    Textbox *getIpTextbox() const;
+
 private:
     sf::RectangleShape background;
 
     Button *hostBtn;
     Button *joinBtn;
     Button *exitBtn;
+
+    Textbox *ipTextbox;
 };
 
 

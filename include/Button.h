@@ -22,6 +22,12 @@ public:
 
     void render(sf::RenderTarget *target);
 
+    void setState(ButtonStates state);
+
+    ButtonStates getState() const;
+
+    bool isPressed() const;
+
 private:
     sf::RectangleShape shape;
     sf::Text text;
@@ -32,10 +38,6 @@ private:
     sf::Color activeColor;
 
     ButtonStates state;
-public:
-    ButtonStates getState() const;
-
-    bool isPressed() const;
 };
 
 

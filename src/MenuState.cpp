@@ -19,12 +19,15 @@ MenuState::MenuState(sf::RenderWindow *window, std::stack<State *> &states) : St
                          sf::Color(70, 70, 70, 255),
                          sf::Color(50, 50, 50, 255),
                          sf::Color(20, 20, 20, 255));
+
+    ipTextbox = new Textbox(sf::Vector2f(100, 250), sf::Vector2f(260, 50), font, sf::Color(74, 74, 74, 255));
 }
 
 MenuState::~MenuState() {
     delete hostBtn;
     delete joinBtn;
     delete exitBtn;
+    delete ipTextbox;
 };
 
 void MenuState::update(const double &deltaTime) {
@@ -42,13 +45,16 @@ void MenuState::render(sf::RenderTarget *target) {
     hostBtn->render(target);
     joinBtn->render(target);
     exitBtn->render(target);
+    ipTextbox->render(target);
 }
 
 void MenuState::updateButtons() {
     hostBtn->update(static_cast<sf::Vector2f>(mousePosWindow));
     joinBtn->update(static_cast<sf::Vector2f>(mousePosWindow));
     exitBtn->update(static_cast<sf::Vector2f>(mousePosWindow));
+    ipTextbox->update(static_cast<sf::Vector2f>(mousePosWindow));
 
+//    Menu buttons
     if(hostBtn->isPressed()) {
         std::cout << "Hosting" << std::endl;
         this->states.push(new GameState(this->window, this->states));
@@ -56,9 +62,18 @@ void MenuState::updateButtons() {
 
     if(joinBtn->isPressed()) {
         std::cout << "Joining" << std::endl;
+        std::cout << ipTextbox->getText() << std::endl;
     }
 
     if(exitBtn->isPressed()) {
         this->wantsToQuit = true;
     }
+}
+
+Textbox *MenuState::getIpTextbox() const {
+    return ipTextbox;
+}
+
+Button *MenuState::getJoinBtn() const {
+    return joinBtn;
 }

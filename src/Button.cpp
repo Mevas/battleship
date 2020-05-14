@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../include/Button.h"
 
 Button::Button(sf::Vector2f position, sf::Vector2f size, sf::Font font, std::string text, sf::Color color,
@@ -64,4 +65,8 @@ ButtonStates Button::getState() const {
 
 bool Button::isPressed() const {
     return state == ButtonStates::ACTIVE;
+}
+
+void Button::setState(ButtonStates state) {
+    Button::state = state;
 }
