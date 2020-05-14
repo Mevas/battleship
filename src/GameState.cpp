@@ -1,7 +1,7 @@
 #include "../include/GameState.h"
 #include "../include/Board.h"
 
-GameState::GameState(sf::RenderWindow *window) : State(window) {
+GameState::GameState(sf::RenderWindow *window, std::stack<State *> &states) : State(window, states) {
     this->player = new Player(this->window, 2);
     this->enemy = new Player(this->window, 1);
 //    this->player->getBoard()->addShip(Coordinate(5, 4), 5, Cardinals::EAST);
