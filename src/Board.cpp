@@ -30,8 +30,8 @@ Board::~Board() {
     delete this->shadow;
 }
 
-void Board::addShip(unsigned length) {
-    heldShips.push(new Ship(this, Cardinals::NORTH, length));
+void Board::addShip(Ship *ship) {
+    heldShips.push(ship);
 }
 
 void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {

@@ -5,6 +5,10 @@
 #include <set>
 #include "Coordinate.h"
 
+enum class Cardinals {
+    NORTH, EAST, SOUTH, WEST
+};
+
 class Board;
 
 enum class Cardinals;

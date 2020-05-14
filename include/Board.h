@@ -4,9 +4,7 @@
 #include <stack>
 #include "Coordinate.h"
 
-enum class Cardinals {
-    NORTH, EAST, SOUTH, WEST
-};
+enum class Cardinals;
 
 enum class HitTypes {
     HIT = 0, MISSED = 1, DESTROYED = 2, DENIED = 3
@@ -24,7 +22,7 @@ public:
 
     virtual ~Board();
 
-    void addShip(unsigned length);
+    void addShip(Ship *ship);
 
     void addShip(Coordinate head, unsigned length, Cardinals direction);
 
