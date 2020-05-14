@@ -23,7 +23,7 @@ void Game::initWindow() {
 }
 
 void Game::initStates() {
-    this->states.push(new MenuState(this->window));
+    this->states.push(new MenuState(this->window, this->states));
 }
 
 Game::~Game() {

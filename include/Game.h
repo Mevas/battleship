@@ -25,6 +25,8 @@ public:
 
     void end();
 
+    void pushGameState();
+
 private:
     sf::RenderWindow *window;
     sf::Event event;

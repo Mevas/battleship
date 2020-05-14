@@ -13,7 +13,7 @@
 
 class State {
 public:
-    explicit State(sf::RenderWindow *window);
+    explicit State(sf::RenderWindow *window, std::stack<State *> &states);
 
     virtual ~State();
 
@@ -32,10 +32,12 @@ public:
 protected:
     sf::RenderWindow *window;
     sf::Vector2i mousePosWindow;
+    sf::Font font;
+    bool wantsToQuit;
+    std::stack<State *> &states;
 
 private:
     std::vector<sf::Texture> textures;
-    bool wantsToQuit;
 };
 
 
