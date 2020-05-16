@@ -17,7 +17,7 @@ public:
 
     virtual ~Board();
 
-    void addShip(unsigned length);
+    void addShip(Ship *ship);
 
     void addShip(Coordinate head, unsigned length, Cardinals direction);
 

@@ -6,7 +6,7 @@
 
 class GameState : public State {
 public:
-    explicit GameState(sf::RenderWindow *window);
+    explicit GameState(sf::RenderWindow *window, std::stack<State *> &states);
 
     ~GameState() override;
 

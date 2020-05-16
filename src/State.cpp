@@ -1,8 +1,11 @@
 #include "../include/State.h"
 
-State::State(sf::RenderWindow *window) {
+State::State(sf::RenderWindow *window, std::stack<State *> &states) : states(states) {
     this->window = window;
     this->wantsToQuit = false;
+    if(!this->font.loadFromFile("../fonts/Roboto-Regular.ttf")) {
+        std::cout << "Could not load font files" << std::endl;
+    }
 }
 
 State::~State() = default;

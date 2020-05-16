@@ -1,17 +1,24 @@
+#include <memory>
+
 #include "../include/GameState.h"
 #include "../include/Board.h"
+#include "../include/ShipFactory.h"
 #include "../include/Client.h"
 
-GameState::GameState(sf::RenderWindow *window) : State(window) {
+GameState::GameState(sf::RenderWindow *window, std::stack<State *> &states) : State(window, states) {
     this->player = new Player(this->window, 2);
     this->enemy = new Player(this->window, 1);
 
     Client::getInstance().setPlayerShadow(this->player->getBoard()->getShadow());
     Client::getInstance().setEnemyShadow(this->enemy->getBoard()->getShadow());
-//    this->player->getBoard()->addShip(Coordinate(5, 4), 5, Cardinals::EAST);
-    this->player->getBoard()->addShip(4);
-    this->player->getBoard()->addShip(3);
-//    this->enemy->getBoard()->addShip(Coordinate(2, 4), 3, Cardinals::SOUTH);
+
+    std::unique_ptr<ShipFactory> shipFactory = std::make_unique<ShipFactory>(*this->player->getBoard());
+
+    this->player->getBoard()->addShip(shipFactory->createShip(ShipTypes::DESTROYER));
+    this->player->getBoard()->addShip(shipFactory->createShip(ShipTypes::CRUISER));
+    this->player->getBoard()->addShip(shipFactory->createShip(ShipTypes::SUBMARINE));
+    this->player->getBoard()->addShip(shipFactory->createShip(ShipTypes::BATTLESHIP));
+    this->player->getBoard()->addShip(shipFactory->createShip(ShipTypes::CARRIER));
 }
 
 GameState::~GameState() {
