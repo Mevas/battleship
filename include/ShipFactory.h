@@ -2,14 +2,7 @@
 #define BATTLESHIP_SHIPFACTORY_H
 
 #include "Ship.h"
-
-enum ShipTypes {
-    DESTROYER,
-    SUBMARINE,
-    CRUISER,
-    BATTLESHIP,
-    CARRIER
-};
+#include "Constants.h"
 
 class ShipFactory {
 public:

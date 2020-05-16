@@ -1,5 +1,6 @@
 #include "../include/MenuState.h"
 #include "../include/GameState.h"
+#include "../include/Client.h"
 
 MenuState::MenuState(sf::RenderWindow *window, std::stack<State *> &states) : State(window, states) {
     background.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
@@ -24,10 +25,13 @@ MenuState::MenuState(sf::RenderWindow *window, std::stack<State *> &states) : St
 }
 
 MenuState::~MenuState() {
+    hostThread->join();
     delete hostBtn;
     delete joinBtn;
     delete exitBtn;
     delete ipTextbox;
+    delete ipTextbox;
+    delete hostThread;
 };
 
 void MenuState::update(const double &deltaTime) {
@@ -57,12 +61,22 @@ void MenuState::updateButtons() {
 //    Menu buttons
     if(hostBtn->isPressed()) {
         std::cout << "Hosting" << std::endl;
+        this->hostThread = new std::thread([] {
+            Client::getInstance().hostGame();
+            std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
+            Client::getInstance().playGame();
+            thGameLoop.join();
+        });
         this->states.push(new GameState(this->window, this->states));
     }
 
     if(joinBtn->isPressed()) {
         std::cout << "Joining" << std::endl;
         std::cout << ipTextbox->getText() << std::endl;
+        Client::getInstance().joinGame(ipTextbox->getText());
+        Client::getInstance().playGame();
+        this->states.push(new GameState(this->window, this->states));
+        std::cout <<"aaaand done!";
     }
 
     if(exitBtn->isPressed()) {

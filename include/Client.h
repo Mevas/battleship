@@ -32,7 +32,7 @@ public:
 
     void hostGame();
 
-    void joinGame();
+    void joinGame(sf::IpAddress serverIp);
 
     void playGame();
 

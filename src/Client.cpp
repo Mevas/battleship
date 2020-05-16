@@ -50,13 +50,13 @@ void Client::hostGame() {
     thListenHost.join();
 }
 
-void Client::joinGame() {
+void Client::joinGame(sf::IpAddress serverIp) {
     sf::Packet packet;
     std::string s;
 
-    std::cout << "Server Ip?\n";
-    std::cin >> this->serverIp;
-
+//    std::cout << "Server Ip?\n";
+//    std::cin >> this->serverIp;
+    this->serverIp = serverIp;
     sf::Socket::Status status = socket.connect(this->serverIp, 53002);
 
     if(status != sf::Socket::Done) {

@@ -2,6 +2,7 @@
 #define BATTLESHIP_MENUSTATE_H
 
 
+#include <thread>
 #include "State.h"
 #include "Button.h"
 #include "Textbox.h"
@@ -32,6 +33,7 @@ private:
     Button *exitBtn;
 
     Textbox *ipTextbox;
+    std::thread * hostThread;
 };
 
 

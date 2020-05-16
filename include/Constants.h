@@ -35,6 +35,14 @@ enum class HitTypes {
     HIT = 0, MISSED = 1, DESTROYED = 2, DENIED = 3
 };
 
+enum ShipTypes {
+    DESTROYER,
+    SUBMARINE,
+    CRUISER,
+    BATTLESHIP,
+    CARRIER
+};
+
 template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
 sf::Packet& operator<<(sf::Packet& roPacket, const T& rkeMsgType)
 {
