@@ -51,6 +51,8 @@ public:
 
     bool wouldCollide(std::vector<Coordinate> coords) const;
 
+    Shadow *getShadow() const;
+
 private:
     sf::Vector2i mousePosWindow;
     Player &player;

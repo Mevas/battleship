@@ -121,8 +121,10 @@ void Client::Defend() {
             HitTypes hit;
             short x, y;
             packetToReceive >> x >> y >> hit;
-            //TODO(Alex): update board based on what info we got
-            std::cout << "You were hit at coord (" << x << ", " << y << "). It was a " << static_cast<int>(hit) << std::endl;
+            playerShadow->mark(Coordinate(x, y), hit);
+
+            std::cout << "You were hit at coord (" << x << ", " << y << "). It was a " << static_cast<int>(hit)
+                      << std::endl;
             break;
         }
         case SERVER_MSG_LOSE: {
@@ -151,9 +153,9 @@ void Client::ResolveAttack() {
             HitTypes hit;
             short x, y;
             packetToReceive >> x >> y >> hit;
-            std::cout << "The attack at coord (" << x << ", " << y << ") was a " << static_cast<int>(hit) << std::endl;
+            enemyShadow->mark(Coordinate(x, y), hit);
 
-            //TODO(Alex): update board based on what info we got
+            std::cout << "The attack at coord (" << x << ", " << y << ") was a " << static_cast<int>(hit) << std::endl;
             startDefendingThread();
             break;
         }
@@ -170,7 +172,6 @@ void Client::ResolveAttack() {
 }
 
 void Client::startDefendingThread(){
-    //TODO(Alex): prevent attacking
     this->is_attacking = false;
     this->defendThread = new std::thread([this] {
         Defend();
@@ -212,4 +213,16 @@ void Client::receivePacket(sf::Packet *packet) {
     }
 
     //std::cout << CLIENT_MESSAGE_PREFIX << "Package Received\n";
+}
+
+bool Client::getIsAttacking() const {
+    return is_attacking.load();
+}
+
+void Client::setPlayerShadow(Shadow *playerShadow) {
+    Client::playerShadow = playerShadow;
+}
+
+void Client::setEnemyShadow(Shadow *enemyShadow) {
+    Client::enemyShadow = enemyShadow;
 }

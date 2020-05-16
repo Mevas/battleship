@@ -58,7 +58,7 @@ void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
 }
 
 HitTypes Board::attack(Coordinate cell) {
-    if(shadow->getHit().count(cell) || shadow->getMissed().count(cell)) {
+    if(shadow->getHit().count(cell) || shadow->getMissed().count(cell) || !Client::getInstance().getIsAttacking()) {
         return HitTypes::DENIED;
     }
     std::cout << cell.X() << " " << cell.Y() << std::endl;
@@ -78,8 +78,8 @@ HitTypes Board::attack(Coordinate cell) {
 //        }
 //    }
 
-    shadow->markMissed(cell);
-    return HitTypes::MISSED;
+//    shadow->markMissed(cell);
+//    return HitTypes::MISSED;
 }
 
 void Board::update(sf::Vector2i mousePosWindow) {
@@ -186,18 +186,18 @@ void Board::click() {
     }
 
 //    Attacking behaviour
-    auto result = attack(cell);
-    switch(result) {
-        case HitTypes::HIT:
-            std::cout << "Hit!\n";
-            break;
-        case HitTypes::MISSED:
-            std::cout << "Missed...\n";
-            break;
-        case HitTypes::DESTROYED:
-            std::cout << "Destroyed!\n";
-            break;
-    }
+    attack(cell);
+//    switch(result) {
+//        case HitTypes::HIT:
+//            std::cout << "Hit!\n";
+//            break;
+//        case HitTypes::MISSED:
+//            std::cout << "Missed...\n";
+//            break;
+//        case HitTypes::DESTROYED:
+//            std::cout << "Destroyed!\n";
+//            break;
+//    }
 }
 
 bool Board::isInBounds(Coordinate coords) const {
@@ -222,5 +222,9 @@ bool Board::wouldCollide(std::vector<Coordinate> coords) const {
 bool Board::isMouseInBounds() const {
     return mousePosWindow.x > startX && mousePosWindow.y > startY && mousePosWindow.x < startX + globals::boardSize &&
            mousePosWindow.y < startY + globals::boardSize;
+}
+
+Shadow *Board::getShadow() const {
+    return shadow;
 }
 

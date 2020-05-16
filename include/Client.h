@@ -10,20 +10,25 @@
 #include <thread>
 #include <atomic>
 #include "Server.h"
+#include "Shadow.h"
 
 class Client {
 private:
     sf::TcpSocket socket;
     sf::IpAddress serverIp;
-    std::thread * defendThread;
+    std::thread *defendThread;
     std::atomic<bool> is_attacking{};
+    Shadow *playerShadow;
+    Shadow *enemyShadow;
+
     Client();
 
 public:
-    static Client& getInstance();
+    static Client &getInstance();
 
-    Client(Client const&)          = delete;
-    void operator=(Client const&)  = delete;
+    Client(Client const &) = delete;
+
+    void operator=(Client const &) = delete;
 
     void hostGame();
 
@@ -49,6 +54,12 @@ public:
     ///
     /// \param packet , address of the packet used to receive data from server
     void receivePacket(sf::Packet *packet);
+
+    bool getIsAttacking() const;
+
+    void setPlayerShadow(Shadow *playerShadow);
+
+    void setEnemyShadow(Shadow *enemyShadow);
 };
 
 
