@@ -21,20 +21,18 @@ public:
 
     HitTypes attack(Coordinate cell);
 
-    //float getStartX() const;
-
-    //float getStartY() const;
-
-    //unsigned int getSize() const;
-
     std::vector<ServerShip *> &getShips();
 
     bool wouldCollide(std::vector<Coordinate> coords) const;
 
+    unsigned getShipCount()
+    {
+        return this->shipCount;
+    }
+
 private:
     unsigned size;
-    //float startX;
-    //float startY;
+    unsigned shipCount;
     std::vector<ServerShip *> ships;
 };
 

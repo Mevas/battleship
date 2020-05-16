@@ -42,8 +42,9 @@ public:
      *
      *  @param client , the socket where you send data
      *  @param packet , address of the packet containing data for the client
+     *  @param clear  , clear packet after information is sent
      */
-    void sendPacket(sf::TcpSocket *client, sf::Packet *packet);
+    void sendPacket(sf::TcpSocket *client, sf::Packet *packet, bool clear = false);
 
     /**
      * @param client , the socket from which you receive data

@@ -8,6 +8,7 @@
 
 ServerBoard::ServerBoard() {
     this->size = globals::boardNumCells;
+    this->shipCount = 0;
 }
 
 ServerBoard::~ServerBoard() {
@@ -36,6 +37,7 @@ void ServerBoard::addShip(Coordinate head, unsigned length, Cardinals direction)
     }
 
     this->ships.push_back(new ServerShip(coords, this, direction));
+    this->shipCount++;
 }
 
 HitTypes ServerBoard::attack(Coordinate cell) {
@@ -45,6 +47,7 @@ HitTypes ServerBoard::attack(Coordinate cell) {
             if(cell == shipCell) {
                 ship->markHit(cell);
                 if(ship->isDestroyed()) {
+                    this->shipCount--;
                     return HitTypes::DESTROYED;
                 }
                 return HitTypes::HIT;

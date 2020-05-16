@@ -171,9 +171,21 @@ void Server::gameLoop() {
                 std::cout << static_cast<int>(hit);
                 packetAttacker << SERVER_ATTACK_RESOLVE << x << y << hit;
                 packetDefender << SERVER_HIT_RESOLVE << x << y << hit;
-                std::thread thMessageAttacker(&Server::sendPacket, this, attacker, &packetAttacker);
-                sendPacket(defender, &packetDefender);
-                thMessageAttacker.join();
+                sendPacket(attacker, &packetAttacker, true);
+                sendPacket(defender, &packetDefender, true);
+                if(defenderBoard->getShipCount() == 0)
+                {
+                    packetAttacker << SERVER_MSG_WIN;
+                    packetDefender << SERVER_MSG_LOSE;
+                    sendPacket(attacker, &packetAttacker, true);
+                    sendPacket(defender, &packetDefender, true);
+                    continueLoop = false;
+                } else {
+                    packetAttacker << SERVER_MSG_EMPTY;
+                    packetDefender << SERVER_MSG_EMPTY;
+                    sendPacket(attacker, &packetAttacker, true);
+                    sendPacket(defender, &packetDefender, true);
+                }
                 break;
             }
             default: {
@@ -182,8 +194,8 @@ void Server::gameLoop() {
             }
         }
         //swap attacker and defender
-        packetAttacker.clear();
-        packetDefender.clear();
+        //packetAttacker.clear();
+        //packetDefender.clear();
         auto tmp = attacker;
         attacker = defender;
         defender = tmp;
@@ -195,7 +207,7 @@ void Server::gameLoop() {
     //TODO: disconnect clients, close server...
 }
 
-void Server::sendPacket(sf::TcpSocket *client, sf::Packet *packet) {
+void Server::sendPacket(sf::TcpSocket *client, sf::Packet *packet, bool clear) {
     //std::cout << SERVER_MESSAGE_PREFIX << "Sending package...\n";
     if((*client).send((*packet)) != sf::Socket::Done) {
         //std::cout << SERVER_MESSAGE_PREFIX << "Can't Send Package to Client!\n";
@@ -203,6 +215,9 @@ void Server::sendPacket(sf::TcpSocket *client, sf::Packet *packet) {
     }
 
     //std::cout << SERVER_MESSAGE_PREFIX << "Package Sent\n";
+
+    if(clear)
+        (*packet).clear();
 }
 
 void Server::receivePacket(sf::TcpSocket *client, sf::Packet *packet) {

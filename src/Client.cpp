@@ -120,8 +120,8 @@ void Client::Attack(Coordinate cell) {
 }
 
 void Client::Defend() {
-    short serverMessage;
-    sf::Packet packetToReceive;
+    short serverMessage, messageLose;
+    sf::Packet packetToReceive, losePacket;
 
     std::cout << "Now you are defending! Wait for enemy to attack.\n";
     receivePacket(&packetToReceive);
@@ -140,11 +140,14 @@ void Client::Defend() {
 
             std::cout << "You were hit at coord (" << x << ", " << y << "). It was a " << static_cast<int>(hit)
                       << std::endl;
+            receivePacket(&losePacket);
+            losePacket >> messageLose;
+            if(messageLose == SERVER_MSG_LOSE)
+            {
+                std::cout << "You Lost. All your ship have sunken\n";
+                //TODO: end the game
+            }
             break;
-        }
-        case SERVER_MSG_LOSE: {
-            std::cout << "You Lost. All your ship have sunken\n";
-            //TODO: end the game
         }
         default: {
             //TODO: check server connection...
@@ -154,8 +157,8 @@ void Client::Defend() {
 
 //return something like  HitTypes? Dunno...I think it's better for client obj to take action
 void Client::ResolveAttack() {
-    short messageFromServer;
-    sf::Packet packetToReceive;
+    short messageFromServer, messageWin;
+    sf::Packet packetToReceive, winPacket;
     receivePacket(&packetToReceive);
     packetToReceive >> messageFromServer;
     switch(messageFromServer) {
@@ -169,14 +172,16 @@ void Client::ResolveAttack() {
             short x, y;
             packetToReceive >> x >> y >> hit;
             enemyShadow->mark(Coordinate(x, y), hit);
-
             std::cout << "The attack at coord (" << x << ", " << y << ") was a " << static_cast<int>(hit) << std::endl;
+            receivePacket(&winPacket);
+            winPacket >> messageWin;
+            if(messageWin == SERVER_MSG_WIN)
+            {
+                std::cout << "You won!!!! Congratulations.\n";
+                //TODO: end the game
+            }
             startDefendingThread();
             break;
-        }
-        case SERVER_MSG_WIN: {
-            std::cout << "You won!!!! Congratulations.\n";
-            //TODO: end the game
         }
         default: {
             std::cout << "HUH??";

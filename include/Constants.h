@@ -17,6 +17,7 @@ const short SERVER_ATTACK_RESOLVE = 4;
 const short SERVER_HIT_RESOLVE = 5;
 const short SERVER_MSG_FIRST_MOVE = 6;
 const short SERVER_MSG_SECOND_MOVE = 7;
+const short SERVER_MSG_EMPTY = 8;
 
 //101-200 for client msg
 const short CLIENT_MSG_DISCONNECT = 101;
