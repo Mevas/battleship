@@ -26,6 +26,7 @@ int main() {
         char now;
         Client::getInstance().joinGame();
         Client::getInstance().playGame();
+        //! Just to differentiate interfaces in testing
         std::cout<<"Say when...\n";
         std::cin >> now;
         Game game;

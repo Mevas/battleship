@@ -7,6 +7,25 @@
 
 #include <string>
 #include <SFML/Network/Packet.hpp>
+#include <chrono>
+
+//1-100 for server msg
+const short SERVER_MSG_END = 1;
+const short SERVER_MSG_WIN = 2;
+const short SERVER_MSG_LOSE = 3;
+const short SERVER_ATTACK_RESOLVE = 4;
+const short SERVER_HIT_RESOLVE = 5;
+const short SERVER_MSG_FIRST_MOVE = 6;
+const short SERVER_MSG_SECOND_MOVE = 7;
+
+//101-200 for client msg
+const short CLIENT_MSG_DISCONNECT = 101;
+const short CLIENT_ATTACK_COMMAND = 102;
+const short CLIENT_SET_SHIP = 103;
+const short CLIENT_ALL_SHIP_SET = 104;
+
+const std::string CLIENT_MESSAGE_PREFIX = "CLIENT<<< ";
+const std::chrono::seconds HEARTBEAT_RATE = static_cast<std::chrono::seconds> (3);
 
 enum class Cardinals {
     NORTH, EAST, SOUTH, WEST
@@ -32,19 +51,4 @@ sf::Packet& operator>>(sf::Packet& roPacket, T& reMsgType)
     return roPacket;
 }
 
-//1-100 for server msg
-const short SERVER_MSG_END = 1;
-const short SERVER_MSG_WIN = 2;
-const short SERVER_MSG_LOSE = 3;
-const short SERVER_ATTACK_RESOLVE = 4;
-const short SERVER_HIT_RESOLVE = 5;
-const short SERVER_MSG_FIRST_MOVE = 6;
-const short SERVER_MSG_SECOND_MOVE = 7;
-
-//101-200 for client msg
-const short CLIENT_MSG_DISCONNECT = 101;
-const short CLIENT_ATTACK_COMMAND = 102;
-const short CLIENT_SET_BOAT = 103;
-
-const std::string CLIENT_MESSAGE_PREFIX = "CLIENT<<< ";
 #endif //BATTLESHIP_CLIENT_CONSTANTS_H

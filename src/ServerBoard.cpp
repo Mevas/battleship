@@ -21,16 +21,16 @@ void ServerBoard::addShip(Coordinate head, unsigned length, Cardinals direction)
     for(int i = 0; i < length; i++) {
         switch(direction) {
             case Cardinals::NORTH:
-                coords.emplace_back(head.X(), head.Y() - i);
-                break;
-            case Cardinals::EAST:
-                coords.emplace_back(head.X() + i, head.Y());
-                break;
-            case Cardinals::SOUTH:
                 coords.emplace_back(head.X(), head.Y() + i);
                 break;
-            case Cardinals::WEST:
+            case Cardinals::EAST:
                 coords.emplace_back(head.X() - i, head.Y());
+                break;
+            case Cardinals::SOUTH:
+                coords.emplace_back(head.X(), head.Y() - i);
+                break;
+            case Cardinals::WEST:
+                coords.emplace_back(head.X() + i, head.Y());
                 break;
         }
     }

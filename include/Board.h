@@ -21,7 +21,7 @@ public:
 
     void addShip(Coordinate head, unsigned length, Cardinals direction);
 
-    HitTypes attack(Coordinate cell);
+    void attack(Coordinate cell);
 
     void update(sf::Vector2i mousePosWindow);
 

@@ -3,6 +3,7 @@
 #include "../include/Globals.h"
 #include "../include/Board.h"
 #include "../include/Player.h"
+#include "../include/Client.h"
 
 Ship::Ship(Board *board, Cardinals direction, unsigned length) : board(board), direction(direction), length(length) {
 
@@ -127,5 +128,8 @@ bool Ship::place(Coordinate center) {
     }
 
     this->coords = coords;
+    
+    Client::getInstance().addShip(this->coords[0], this->length, this->direction);
+
     return true;
 }

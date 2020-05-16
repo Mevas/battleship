@@ -89,6 +89,21 @@ void Client::playGame() {
     std::cout << "Game finished!\n";
 }
 
+void Client::addShip(Coordinate head, unsigned length, Cardinals direction)
+{
+    sf::Packet addShipPacket;
+    //TODO: add op packet << (and >>) overload on class Coordinate
+    addShipPacket << CLIENT_SET_SHIP << head.X() << head.Y() << length << direction;
+    sendPacket(&addShipPacket);
+}
+
+void Client::endShipPlacement() {
+    sf::Packet endShipPlacementPacket;
+    endShipPlacementPacket << CLIENT_ALL_SHIP_SET;
+    sendPacket(& endShipPlacementPacket);
+}
+
+
 void Client::Attack(Coordinate cell) {
     char cmd;
     sf::Packet packetToSend;
@@ -176,6 +191,13 @@ void Client::startDefendingThread(){
     this->defendThread = new std::thread([this] {
         Defend();
         is_attacking = true;
+    });
+}
+
+void Client::startHeartbeatThread(){
+    //a while here
+    this->defendThread = new std::thread([this] {
+        // TODO(maybe) make a packet send to server receive msg back
     });
 }
 

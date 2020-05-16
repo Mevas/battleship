@@ -16,8 +16,8 @@ class Client {
 private:
     sf::TcpSocket socket;
     sf::IpAddress serverIp;
-    std::thread *defendThread;
-    std::atomic<bool> is_attacking{};
+    std::thread * defendThread;
+    std::atomic<bool> is_attacking {};
     Shadow *playerShadow;
     Shadow *enemyShadow;
 
@@ -36,6 +36,10 @@ public:
 
     void playGame();
 
+    void addShip(Coordinate head, unsigned length, Cardinals direction);
+
+    void endShipPlacement();
+
     void Attack(Coordinate cell);
 
     void Defend();
@@ -43,6 +47,11 @@ public:
     void ResolveAttack();
 
     void startDefendingThread();
+
+    ///
+    ///every HEARTBEAT_RATE, send the server your connection status and receive server status
+    void startHeartbeatThread();
+
     ///
     /// \return true if defendThread is finished
     bool readyToAttack();

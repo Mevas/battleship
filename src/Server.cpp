@@ -81,11 +81,6 @@ void Server::acceptGuest() {
 }
 
 void Server::gameLoop() {
-    //TODO: swap hardcoded ships with real ships
-    hostBoard->addShip(Coordinate(0, 0), 3, Cardinals::SOUTH);
-    guestBoard->addShip(Coordinate(3, 3), 4, Cardinals::EAST);
-    guestBoard->addShip(Coordinate(2, 5), 2, Cardinals::SOUTH);
-
     sf::Packet packetAttacker;
     sf::Packet packetDefender;
     //TODO: randomize first move
@@ -94,15 +89,66 @@ void Server::gameLoop() {
     ServerBoard *attackerBoard = this->hostBoard;
     ServerBoard *defenderBoard = this->guestBoard;
 
-    short message;
-    bool continueLoop = true;
-
     packetAttacker << SERVER_MSG_FIRST_MOVE;
     packetDefender << SERVER_MSG_SECOND_MOVE;
     sendPacket(attacker, &packetAttacker);
     sendPacket(defender, &packetDefender);
     packetAttacker.clear();
     packetDefender.clear();
+
+    std::thread thHostPlaceBoard([this] {
+        sf::Packet packetHost;
+        short shipHeadX, shipHeadY;
+        unsigned shipLength;
+        Cardinals shipDirection;
+        short msgHost;
+
+        while(true) {
+            receivePacket(&clientHost, &packetHost);
+            packetHost >> msgHost;
+            if (msgHost == CLIENT_ALL_SHIP_SET) {
+                break;
+            }
+            else if(msgHost != CLIENT_SET_SHIP){
+                //dunno extend std::exception i guess...
+                std::cout << "Host Add ship operation failed!";
+                continue;
+            }
+            packetHost >> shipHeadX >> shipHeadY >> shipLength >> shipDirection;
+            Coordinate shipHead(shipHeadX, shipHeadY);
+            hostBoard->addShip(shipHead, shipLength, shipDirection);
+        }
+    });
+
+    std::thread thGuestPlaceBoard([this] {
+        sf::Packet packetHost;
+        short shipHeadX, shipHeadY;
+        unsigned shipLength;
+        Cardinals shipDirection;
+        short msgHost;
+
+        while(true) {
+            receivePacket(&clientGuest, &packetHost);
+            packetHost >> msgHost;
+            if (msgHost == CLIENT_ALL_SHIP_SET) {
+                break;
+            }
+            else if(msgHost != CLIENT_SET_SHIP){
+                //dunno
+                std::cout << "Guest Add ship operation failed!";
+                continue;
+            }
+            packetHost >> shipHeadX >> shipHeadY >> shipLength >> shipDirection;
+            Coordinate shipHead(shipHeadX, shipHeadY);
+            guestBoard->addShip(shipHead, shipLength, shipDirection);
+        }
+    });
+
+    thHostPlaceBoard.join();
+    thGuestPlaceBoard.join();
+
+    short message;
+    bool continueLoop = true;
 
     //TODO: change to loop
     while(continueLoop) {

@@ -35,6 +35,8 @@ void Board::addShip(unsigned length) {
     heldShips.push(new Ship(this, Cardinals::NORTH, length));
 }
 
+//TODO: remove function
+//! Function deprecated!
 void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
     std::vector<Coordinate> coords;
     for(int i = 0; i < length; i++) {
@@ -57,29 +59,13 @@ void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
     this->ships.push_back(new Ship(coords, this, direction));
 }
 
-HitTypes Board::attack(Coordinate cell) {
+void Board::attack(Coordinate cell) {
     if(shadow->getHit().count(cell) || shadow->getMissed().count(cell) || !Client::getInstance().getIsAttacking()) {
-        return HitTypes::DENIED;
+        return;
     }
     std::cout << cell.X() << " " << cell.Y() << std::endl;
     Client::getInstance().Attack(cell);
     Client::getInstance().ResolveAttack();
-/// check is happening on the server side, should just update board here or in the resolveAttack() call
-//    for(auto ship : ships) {
-//        for(auto shipCell : ship->getCoords()) {
-//            if(cell == shipCell) {
-//                shadow->markHit(cell);
-//                ship->markHit(cell);
-//                if(ship->isDestroyed()) {
-//                    return HitTypes::DESTROYED;
-//                }
-//                return HitTypes::HIT;
-//            }
-//        }
-//    }
-
-//    shadow->markMissed(cell);
-//    return HitTypes::MISSED;
 }
 
 void Board::update(sf::Vector2i mousePosWindow) {
@@ -179,9 +165,13 @@ void Board::click() {
             return;
         }
 
+        //Client::getInstance().sendPacket();
         ships.push_back(heldShips.top());
         heldShips.pop();
-
+        if(heldShips.empty())
+        {
+            Client::getInstance().endShipPlacement();
+        }
         return;
     }
 
