@@ -3,6 +3,7 @@
 
 
 #include <thread>
+#include <atomic>
 #include "State.h"
 #include "Button.h"
 #include "Textbox.h"
@@ -34,6 +35,7 @@ private:
 
     Textbox *ipTextbox;
     std::thread * hostThread;
+    std::atomic<bool> ready_for_next_state {};
 };
 
 

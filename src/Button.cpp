@@ -4,7 +4,7 @@
 Button::Button(sf::Vector2f position, sf::Vector2f size, sf::Font font, std::string text, sf::Color color,
                sf::Color hoverColor, sf::Color activeColor) {
     this->state = ButtonStates::IDLE;
-
+    this->clicking_is_prevented = false;
     this->shape.setPosition(position);
     this->shape.setSize(size);
 
@@ -64,9 +64,16 @@ ButtonStates Button::getState() const {
 }
 
 bool Button::isPressed() const {
+    if(this->clicking_is_prevented)
+        return false;
     return state == ButtonStates::ACTIVE;
 }
 
 void Button::setState(ButtonStates state) {
     Button::state = state;
+}
+
+void Button::preventClicking()
+{
+    this->clicking_is_prevented = true;
 }

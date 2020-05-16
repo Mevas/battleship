@@ -3,6 +3,7 @@
 #include "../include/Client.h"
 
 MenuState::MenuState(sf::RenderWindow *window, std::stack<State *> &states) : State(window, states) {
+    ready_for_next_state = false;
     background.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
     background.setFillColor(sf::Color(80, 80, 80, 255));
 
@@ -38,6 +39,19 @@ void MenuState::update(const double &deltaTime) {
     this->updateInput(deltaTime);
     this->updateMousePosition();
     this->updateButtons();
+    if(this->ready_for_next_state)
+    {
+        this->hostThread->join();
+        delete this->hostThread;
+        this->hostThread = new std::thread([] {
+            std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
+            Client::getInstance().playGame();
+            thGameLoop.join();
+        });
+        this->ready_for_next_state = false;
+        this->states.push(new GameState(this->window, this->states));
+
+    }
 }
 
 void MenuState::updateInput(const double &deltaTime) {
@@ -61,22 +75,22 @@ void MenuState::updateButtons() {
 //    Menu buttons
     if(hostBtn->isPressed()) {
         std::cout << "Hosting" << std::endl;
-        this->hostThread = new std::thread([] {
+        this->hostThread = new std::thread([this] {
             Client::getInstance().hostGame();
-            std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
-            Client::getInstance().playGame();
-            thGameLoop.join();
+            this->ready_for_next_state = true;
         });
-        this->states.push(new GameState(this->window, this->states));
+        hostBtn->preventClicking();
+        joinBtn->preventClicking();
     }
 
     if(joinBtn->isPressed()) {
         std::cout << "Joining" << std::endl;
         std::cout << ipTextbox->getText() << std::endl;
-        Client::getInstance().joinGame(ipTextbox->getText());
-        Client::getInstance().playGame();
-        this->states.push(new GameState(this->window, this->states));
-        std::cout <<"aaaand done!";
+        bool joined = Client::getInstance().joinGame(ipTextbox->getText());
+        if(joined) {
+            Client::getInstance().playGame();
+            this->states.push(new GameState(this->window, this->states));
+        }
     }
 
     if(exitBtn->isPressed()) {

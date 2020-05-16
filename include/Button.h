@@ -5,6 +5,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <atomic>
 
 enum class ButtonStates {
     IDLE, HOVER, ACTIVE
@@ -28,6 +29,8 @@ public:
 
     bool isPressed() const;
 
+    void preventClicking();
+
 private:
     sf::RectangleShape shape;
     sf::Text text;
@@ -38,6 +41,7 @@ private:
     sf::Color activeColor;
 
     ButtonStates state;
+    std::atomic<bool> clicking_is_prevented {};
 };
 
 

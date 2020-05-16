@@ -32,7 +32,7 @@ public:
 
     void hostGame();
 
-    void joinGame(sf::IpAddress serverIp);
+    bool joinGame(sf::IpAddress serverIp);
 
     void playGame();
 
@@ -55,6 +55,8 @@ public:
     ///
     /// \return true if defendThread is finished
     bool readyToAttack();
+
+    bool readyToStartGame();
 
     ///
     /// \param packet , address of the packet used to send data to server

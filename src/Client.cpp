@@ -50,7 +50,7 @@ void Client::hostGame() {
     thListenHost.join();
 }
 
-void Client::joinGame(sf::IpAddress serverIp) {
+bool Client::joinGame(sf::IpAddress serverIp) {
     sf::Packet packet;
     std::string s;
 
@@ -61,6 +61,7 @@ void Client::joinGame(sf::IpAddress serverIp) {
 
     if(status != sf::Socket::Done) {
         std::cout << "No Host for me:(\n";
+        return false;
     }
     receivePacket(&packet);
     packet >> s;
@@ -70,7 +71,7 @@ void Client::joinGame(sf::IpAddress serverIp) {
     s = "I am your Guest!";
     packetToSend << s;
     sendPacket(&packet);
-
+    return true;
     //playGame();
 }
 
