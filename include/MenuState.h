@@ -14,9 +14,9 @@ public:
 
     ~MenuState() override;
 
-    void update(const double &deltaTime) override;
+    void update() override;
 
-    void updateInput(const double &deltaTime) override;
+    void updateInput() override;
 
     void updateButtons();
 

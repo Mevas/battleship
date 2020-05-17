@@ -12,7 +12,6 @@ Ship::Ship(Board *board, Cardinals direction, unsigned length) : board(board), d
 Ship::Ship(std::vector<Coordinate> coords, Board *board, Cardinals direction) : board(board), direction(direction) {
     this->length = coords.size();
     this->coords = std::move(coords);
-    std::cout << "Ship created at coord " << this->coords[0] << std::endl;
 }
 
 Ship::~Ship() = default;

@@ -21,9 +21,9 @@ public:
 
     virtual void checkForQuit();
 
-    virtual void update(const double &deltaTime) = 0;
+    virtual void update() = 0;
 
-    virtual void updateInput(const double &deltaTime) = 0;
+    virtual void updateInput() = 0;
 
     virtual void updateMousePosition();
 

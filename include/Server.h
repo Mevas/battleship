@@ -16,15 +16,17 @@ private:
     sf::TcpListener listener;
     sf::TcpSocket clientHost;
     sf::TcpSocket clientGuest;
-    ServerBoard * hostBoard;
-    ServerBoard * guestBoard;
+    ServerBoard *hostBoard;
+    ServerBoard *guestBoard;
 
     Server();
-public:
-    static Server& getInstance();
 
-    Server(Server const&)          = delete;
-    void operator=(Server const&)  = delete;
+public:
+    static Server &getInstance();
+
+    Server(Server const &) = delete;
+
+    void operator=(Server const &) = delete;
 
     sf::IpAddress getServerIp();
 
@@ -39,7 +41,6 @@ public:
     void gameLoop();
 
     /**
-     *
      *  @param client , the socket where you send data
      *  @param packet , address of the packet containing data for the client
      *  @param clear  , clear packet after information is sent

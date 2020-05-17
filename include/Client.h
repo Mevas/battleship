@@ -52,10 +52,6 @@ public:
     void startDefendingThread();
 
     ///
-    ///every HEARTBEAT_RATE, send the server your connection status and receive server status
-    void startHeartbeatThread();
-
-    ///
     /// \return true if defendThread is finished
     bool readyToAttack();
 

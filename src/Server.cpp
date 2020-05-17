@@ -12,9 +12,8 @@ Server::Server() {
     this->guestBoard = new ServerBoard();
 }
 
-Server & Server::getInstance()
-{
-    static Server    instance; // Guaranteed to be destroyed.
+Server &Server::getInstance() {
+    static Server instance; // Guaranteed to be destroyed.
     // Instantiated on first use.
     return instance;
 }
@@ -25,9 +24,9 @@ sf::IpAddress Server::getServerIp() {
 
 void Server::startListeningHost() {
     if(this->listener.listen(53001) != sf::Socket::Done) {
-        std::cout << "Can't start listening host!\n";
+        std::cout << "Can't start listening to host!\n";
     } else {
-        std::cout << "Now I Listen for Host!\n";
+        std::cout << "Listening to host\n";
         acceptHost();
     }
 }
@@ -63,7 +62,7 @@ void Server::acceptGuest() {
         return;
     }
 
-    std::string s = "hello, Guest";
+    std::string s = "Hello, guest";
 
     sf::Packet packet;
     sf::Packet packetToReceive;
@@ -89,13 +88,8 @@ void Server::gameLoop() {
         while(true) {
             receivePacket(&clientHost, &packetHost);
             packetHost >> msgHost;
-            if (msgHost == CLIENT_ALL_SHIP_SET) {
+            if(msgHost == CLIENT_ALL_SHIP_SET) {
                 break;
-            }
-            else if(msgHost != CLIENT_SET_SHIP){
-                //dunno extend std::exception i guess...
-                std::cout << "Host Add ship operation failed!";
-                continue;
             }
             packetHost >> shipHeadX >> shipHeadY >> shipLength >> shipDirection;
             Coordinate shipHead(shipHeadX, shipHeadY);
@@ -113,13 +107,8 @@ void Server::gameLoop() {
         while(true) {
             receivePacket(&clientGuest, &packetHost);
             packetHost >> msgHost;
-            if (msgHost == CLIENT_ALL_SHIP_SET) {
+            if(msgHost == CLIENT_ALL_SHIP_SET) {
                 break;
-            }
-            else if(msgHost != CLIENT_SET_SHIP){
-                //dunno
-                std::cout << "Guest Add ship operation failed!";
-                continue;
             }
             packetHost >> shipHeadX >> shipHeadY >> shipLength >> shipDirection;
             Coordinate shipHead(shipHeadX, shipHeadY);
@@ -132,7 +121,6 @@ void Server::gameLoop() {
 
     sf::Packet packetAttacker;
     sf::Packet packetDefender;
-    //TODO: randomize first move
     sf::TcpSocket *attacker = &this->clientHost;
     sf::TcpSocket *defender = &this->clientGuest;
     ServerBoard *attackerBoard = this->hostBoard;
@@ -148,16 +136,12 @@ void Server::gameLoop() {
     short message;
     bool continueLoop = true;
 
-    //TODO: change to loop
     while(continueLoop) {
         //receive msg from host
         receivePacket(attacker, &packetAttacker);
         packetAttacker >> message;
         switch(message) {
             case CLIENT_MSG_DISCONNECT: {
-                //TODO: inform defender, prepare to close server, break game loop
-                //packetDefender << SERVER_MSG_END;
-                //sendPacket(defender, &packetDefender);
                 continueLoop = false;
                 break;
             }
@@ -166,13 +150,11 @@ void Server::gameLoop() {
                 packetAttacker >> x >> y;
                 packetAttacker.clear();
                 HitTypes hit = defenderBoard->attack(Coordinate(x, y));
-                std::cout << static_cast<int>(hit);
                 packetAttacker << SERVER_ATTACK_RESOLVE << x << y << hit;
                 packetDefender << SERVER_HIT_RESOLVE << x << y << hit;
                 sendPacket(attacker, &packetAttacker, true);
                 sendPacket(defender, &packetDefender, true);
-                if(defenderBoard->getShipCount() == 0)
-                {
+                if(defenderBoard->getShipCount() == 0) {
                     packetAttacker << SERVER_MSG_WIN;
                     packetDefender << SERVER_MSG_LOSE;
                     sendPacket(attacker, &packetAttacker, true);
@@ -187,13 +169,9 @@ void Server::gameLoop() {
                 break;
             }
             default: {
-                //TODO: check connection with attacker???, send defender w8 message, try again, prevent attacker/defender swap
                 break;
             }
         }
-        //swap attacker and defender
-        //packetAttacker.clear();
-        //packetDefender.clear();
         auto tmp = attacker;
         attacker = defender;
         defender = tmp;
@@ -201,8 +179,6 @@ void Server::gameLoop() {
         attackerBoard = defenderBoard;
         defenderBoard = tmpBoard;
     }
-
-    //TODO: disconnect clients, close server...
 }
 
 void Server::sendPacket(sf::TcpSocket *client, sf::Packet *packet, bool clear) {

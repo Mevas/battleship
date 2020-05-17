@@ -95,7 +95,7 @@ void Game::update() {
     this->updateSFMLEvent();
 
     if(!this->states.empty()) {
-        this->states.top()->update(this->deltaTime);
+        this->states.top()->update();
 
         if(this->states.top()->getWantsToQuit()) {
             delete this->states.top();
@@ -119,15 +119,9 @@ void Game::render() {
 
 void Game::run() {
     while(this->window->isOpen()) {
-        this->updateDeltaTime();
-
         this->update();
         this->render();
     }
-}
-
-void Game::updateDeltaTime() {
-    this->deltaTime = this->deltaTimeClock.restart().asSeconds();
 }
 
 void Game::end() {

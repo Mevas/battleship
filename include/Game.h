@@ -10,8 +10,6 @@ public:
 
     virtual ~Game();
 
-    void updateDeltaTime();
-
     void updateSFMLEvent();
 
     void updateGameEvents();
@@ -26,15 +24,10 @@ public:
 
     void end();
 
-    void pushGameState();
-
 private:
 
     sf::RenderWindow *window;
     sf::Event event;
-
-    sf::Clock deltaTimeClock;
-    double deltaTime;
 
     std::stack<State *> states;
 

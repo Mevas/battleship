@@ -29,8 +29,8 @@ GameState::~GameState() {
     delete this->enemy;
 };
 
-void GameState::update(const double &deltaTime) {
-    this->updateInput(deltaTime);
+void GameState::update() {
+    this->updateInput();
     this->updateMousePosition();
 
     Client::getInstance().readyToAttack();
@@ -51,7 +51,7 @@ void GameState::update(const double &deltaTime) {
     this->enemy->update(this->window, this->mousePosWindow);
 }
 
-void GameState::updateInput(const double &deltaTime) {
+void GameState::updateInput() {
     this->checkForQuit();
 }
 

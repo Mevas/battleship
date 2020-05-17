@@ -43,17 +43,15 @@ void Client::hostGame() {
     sf::Socket::Status status = socket.connect(this->serverIp, 53001);
 
     if(status != sf::Socket::Done) {
-        std::cout << "Connection to server couldn't be make\n";
+        std::cout << "Connection to server couldn't be made\n";
     }
 
     receivePacket(&packet);
 
     packet >> s;
-    std::cout << s << std::endl;
 
     receivePacket(&packet);
     packet >> s;
-    std::cout << s << std::endl;
     thListenHost.join();
 }
 
@@ -65,12 +63,11 @@ bool Client::joinGame(sf::IpAddress serverIp) {
     sf::Socket::Status status = socket.connect(this->serverIp, 53001);
 
     if(status != sf::Socket::Done) {
-        std::cout << "No Host for me:(\n";
+        std::cout << "No host for me :(\n";
         return false;
     }
     receivePacket(&packet);
     packet >> s;
-    std::cout << s << std::endl;
 
     sf::Packet packetToSend;
     s = "I am your Guest!";
@@ -84,14 +81,11 @@ void Client::playGame() {
     short serverMessage;
     receivePacket(&packet);
     packet >> serverMessage;
-    std::cout << serverMessage << std::endl;
     if(serverMessage == SERVER_MSG_FIRST_MOVE) {
         this->is_attacking = true;
     } else {
         startDefendingThread();
     }
-
-    std::cout << "Game finished!\n";
 }
 
 void Client::addShip(Coordinate head, unsigned length, Cardinals direction) {
@@ -121,13 +115,10 @@ void Client::Defend() {
     short serverMessage, messageLose;
     sf::Packet packetToReceive, losePacket;
 
-    std::cout << "Now you are defending! Wait for enemy to attack.\n";
     receivePacket(&packetToReceive);
     packetToReceive >> serverMessage;
-    std::cout << serverMessage << std::endl;
     switch(serverMessage) {
         case SERVER_MSG_END: {
-            //TODO: disconnect...
             return;
         }
         case SERVER_HIT_RESOLVE: {
@@ -136,8 +127,6 @@ void Client::Defend() {
             packetToReceive >> x >> y >> hit;
             playerShadow->mark(Coordinate(x, y), hit);
 
-            std::cout << "You were hit at coord (" << x << ", " << y << "). It was a " << static_cast<int>(hit)
-                      << std::endl;
             receivePacket(&losePacket);
             losePacket >> messageLose;
             if(messageLose == SERVER_MSG_LOSE) {
@@ -146,7 +135,7 @@ void Client::Defend() {
             break;
         }
         default: {
-            //TODO: check server connection...
+            break;
         }
     }
 }
@@ -178,6 +167,7 @@ void Client::ResolveAttack() {
         }
         default: {
             std::cout << "Connection to server was lost";
+            break;
         }
     }
 
@@ -191,13 +181,6 @@ void Client::startDefendingThread() {
     });
 }
 
-void Client::startHeartbeatThread() {
-    //a while here
-    this->defendThread = new std::thread([this] {
-        // TODO(maybe) make a packet send to server receive msg back
-    });
-}
-
 bool Client::readyToAttack() {
     if(defendThread == nullptr) {
         return false;
@@ -207,8 +190,7 @@ bool Client::readyToAttack() {
         this->defendThread->join();
         delete this->defendThread;
         this->defendThread = nullptr;
-        if(this->waitEnemyThread != nullptr)
-        {
+        if(this->waitEnemyThread != nullptr) {
             this->waitEnemyThread->join();
             delete this->waitEnemyThread;
             this->waitEnemyThread = nullptr;

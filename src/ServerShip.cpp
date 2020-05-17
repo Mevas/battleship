@@ -15,7 +15,6 @@ ServerShip::ServerShip(ServerBoard *board, Cardinals direction, unsigned length)
 ServerShip::ServerShip(std::vector<Coordinate> coords, ServerBoard *board, Cardinals direction) : board(board), direction(direction) {
     this->length = coords.size();
     this->coords = std::move(coords);
-    std::cout << "Ship created at coord " << this->coords[0] << std::endl;
 }
 
 ServerShip::~ServerShip() = default;

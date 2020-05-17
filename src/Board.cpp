@@ -35,35 +35,11 @@ void Board::addShip(Ship *ship) {
     heldShips.push(ship);
 }
 
-//TODO: remove function
-//! Function deprecated!
-void Board::addShip(Coordinate head, unsigned length, Cardinals direction) {
-    std::vector<Coordinate> coords;
-    for(int i = 0; i < length; i++) {
-        switch(direction) {
-            case Cardinals::NORTH:
-                coords.emplace_back(head.X(), head.Y() - i);
-                break;
-            case Cardinals::EAST:
-                coords.emplace_back(head.X() + i, head.Y());
-                break;
-            case Cardinals::SOUTH:
-                coords.emplace_back(head.X(), head.Y() + i);
-                break;
-            case Cardinals::WEST:
-                coords.emplace_back(head.X() - i, head.Y());
-                break;
-        }
-    }
-
-    this->ships.push_back(new Ship(coords, this, direction));
-}
-
 void Board::attack(Coordinate cell) {
     if(shadow->getHit().count(cell) || shadow->getMissed().count(cell) || !Client::getInstance().getIsAttacking()) {
         return;
     }
-    std::cout << cell.X() << " " << cell.Y() << std::endl;
+
     Client::getInstance().Attack(cell);
     Client::getInstance().ResolveAttack();
 }
@@ -165,29 +141,15 @@ void Board::click() {
             return;
         }
 
-        //Client::getInstance().sendPacket();
         ships.push_back(heldShips.top());
         heldShips.pop();
-        if(heldShips.empty())
-        {
+        if(heldShips.empty()) {
             Client::getInstance().endShipPlacement();
         }
         return;
     }
 
-//    Attacking behaviour
     attack(cell);
-//    switch(result) {
-//        case HitTypes::HIT:
-//            std::cout << "Hit!\n";
-//            break;
-//        case HitTypes::MISSED:
-//            std::cout << "Missed...\n";
-//            break;
-//        case HitTypes::DESTROYED:
-//            std::cout << "Destroyed!\n";
-//            break;
-//    }
 }
 
 bool Board::isInBounds(Coordinate coords) const {

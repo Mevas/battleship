@@ -26,26 +26,25 @@ MenuState::MenuState(sf::RenderWindow *window, std::stack<State *> &states) : St
 }
 
 MenuState::~MenuState() {
-    hostThread->join();
+    if(hostThread != nullptr) {
+        hostThread->join();
+    }
     delete hostBtn;
     delete joinBtn;
     delete exitBtn;
     delete ipTextbox;
-    delete ipTextbox;
     delete hostThread;
 };
 
-void MenuState::update(const double &deltaTime) {
-    this->updateInput(deltaTime);
+void MenuState::update() {
+    this->updateInput();
     this->updateMousePosition();
     this->updateButtons();
-    if(this->ready_for_next_state)
-    {
+    if(this->ready_for_next_state) {
         this->hostThread->join();
         delete this->hostThread;
         this->hostThread = new std::thread([] {
             std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
-            //Client::getInstance().playGame();
             thGameLoop.join();
         });
         this->ready_for_next_state = false;
@@ -54,7 +53,7 @@ void MenuState::update(const double &deltaTime) {
     }
 }
 
-void MenuState::updateInput(const double &deltaTime) {
+void MenuState::updateInput() {
     this->checkForQuit();
 }
 
@@ -85,10 +84,8 @@ void MenuState::updateButtons() {
 
     if(joinBtn->isPressed()) {
         std::cout << "Joining" << std::endl;
-        std::cout << ipTextbox->getText() << std::endl;
         bool joined = Client::getInstance().joinGame(ipTextbox->getText());
         if(joined) {
-            //Client::getInstance().playGame();
             this->states.push(new GameState(this->window, this->states));
         }
     }

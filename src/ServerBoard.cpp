@@ -41,7 +41,6 @@ void ServerBoard::addShip(Coordinate head, unsigned length, Cardinals direction)
 }
 
 HitTypes ServerBoard::attack(Coordinate cell) {
-    std::cout << cell.X() << " " << cell.Y() << std::endl;
     for(auto ship : ships) {
         for(auto shipCell : ship->getCoords()) {
             if(cell == shipCell) {
