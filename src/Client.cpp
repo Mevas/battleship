@@ -8,16 +8,24 @@
 #include <iostream>
 #include <thread>
 
-Client::Client()
-{
+Client::Client() {
     this->is_attacking = false;
+    this->won = false;
+    this->lost = false;
     this->defendThread = nullptr;
     this->waitEnemyThread = nullptr;
 }
 
-Client & Client::getInstance()
-{
-    static Client    instance; // Guaranteed to be destroyed.
+bool Client::Won() const {
+    return won;
+}
+
+bool Client::Lost() const {
+    return lost;
+}
+
+Client &Client::getInstance() {
+    static Client instance; // Guaranteed to be destroyed.
     // Instantiated on first use.
     return instance;
 }
@@ -26,9 +34,7 @@ void Client::hostGame() {
 
     sf::Packet packet;
 
-    sf::Uint16 x;
     std::string s;
-    double d;
 
     //this->server = new Server();
     //this->serverIp = Server::getInstance().getServerIp();
@@ -56,8 +62,6 @@ bool Client::joinGame(sf::IpAddress serverIp) {
     sf::Packet packet;
     std::string s;
 
-//    std::cout << "Server Ip?\n";
-//    std::cin >> this->serverIp;
     this->serverIp = serverIp;
     sf::Socket::Status status = socket.connect(this->serverIp, 53001);
 
@@ -74,7 +78,6 @@ bool Client::joinGame(sf::IpAddress serverIp) {
     packetToSend << s;
     sendPacket(&packet);
     return true;
-    //playGame();
 }
 
 void Client::playGame() {
@@ -92,8 +95,7 @@ void Client::playGame() {
     std::cout << "Game finished!\n";
 }
 
-void Client::addShip(Coordinate head, unsigned length, Cardinals direction)
-{
+void Client::addShip(Coordinate head, unsigned length, Cardinals direction) {
     sf::Packet addShipPacket;
     //TODO: add op packet << (and >>) overload on class Coordinate
     addShipPacket << CLIENT_SET_SHIP << head.X() << head.Y() << length << direction;
@@ -103,7 +105,7 @@ void Client::addShip(Coordinate head, unsigned length, Cardinals direction)
 void Client::endShipPlacement() {
     sf::Packet endShipPlacementPacket;
     endShipPlacementPacket << CLIENT_ALL_SHIP_SET;
-    sendPacket(& endShipPlacementPacket);
+    sendPacket(&endShipPlacementPacket);
     this->waitEnemyThread = new std::thread([this] {
         playGame();
     });
@@ -111,16 +113,7 @@ void Client::endShipPlacement() {
 
 
 void Client::Attack(Coordinate cell) {
-    char cmd;
     sf::Packet packetToSend;
-    //    std::cout << "Want to disconnect? (Y/N)\n";
-    //    std::cin >> cmd;
-//    if(cmd == 'Y') {
-//        //TODO: Actually disconnect...
-//        packetToSend << CLIENT_MSG_DISCONNECT;
-//        sendPacket(&packetToSend);
-//        return;
-//    }
     packetToSend << CLIENT_ATTACK_COMMAND << cell.X() << cell.Y();
     sendPacket(&packetToSend);
 }
@@ -148,10 +141,8 @@ void Client::Defend() {
                       << std::endl;
             receivePacket(&losePacket);
             losePacket >> messageLose;
-            if(messageLose == SERVER_MSG_LOSE)
-            {
-                std::cout << "You Lost. All your ship have sunken\n";
-                //TODO: end the game
+            if(messageLose == SERVER_MSG_LOSE) {
+                lost = true;
             }
             break;
         }
@@ -169,8 +160,7 @@ void Client::ResolveAttack() {
     packetToReceive >> messageFromServer;
     switch(messageFromServer) {
         case SERVER_MSG_END: {
-            std::cout << "server closed, end process...";
-            //TODO: disconnect
+            std::cout << "Server closed, ending process...";
             return;
         }
         case SERVER_ATTACK_RESOLVE: {
@@ -178,26 +168,23 @@ void Client::ResolveAttack() {
             short x, y;
             packetToReceive >> x >> y >> hit;
             enemyShadow->mark(Coordinate(x, y), hit);
-            std::cout << "The attack at coord (" << x << ", " << y << ") was a " << static_cast<int>(hit) << std::endl;
+
             receivePacket(&winPacket);
             winPacket >> messageWin;
-            if(messageWin == SERVER_MSG_WIN)
-            {
-                std::cout << "You won!!!! Congratulations.\n";
-                //TODO: end the game
+            if(messageWin == SERVER_MSG_WIN) {
+                won = true;
             }
             startDefendingThread();
             break;
         }
         default: {
-            std::cout << "HUH??";
-            //TODO: check server connection...
+            std::cout << "Connection to server was lost";
         }
     }
 
 }
 
-void Client::startDefendingThread(){
+void Client::startDefendingThread() {
     this->is_attacking = false;
     this->defendThread = new std::thread([this] {
         Defend();
@@ -205,15 +192,14 @@ void Client::startDefendingThread(){
     });
 }
 
-void Client::startHeartbeatThread(){
+void Client::startHeartbeatThread() {
     //a while here
     this->defendThread = new std::thread([this] {
         // TODO(maybe) make a packet send to server receive msg back
     });
 }
 
-bool Client::readyToAttack()
-{
+bool Client::readyToAttack() {
     if(defendThread == nullptr) {
         return false;
     }

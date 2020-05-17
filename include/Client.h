@@ -16,9 +16,11 @@ class Client {
 private:
     sf::TcpSocket socket;
     sf::IpAddress serverIp;
-    std::thread * defendThread;
+    std::thread *defendThread;
     std::thread * waitEnemyThread;
-    std::atomic<bool> is_attacking {};
+    std::atomic<bool> is_attacking{};
+    bool won;
+    bool lost;
     Shadow *playerShadow;
     Shadow *enemyShadow;
 
@@ -72,6 +74,10 @@ public:
     void setPlayerShadow(Shadow *playerShadow);
 
     void setEnemyShadow(Shadow *enemyShadow);
+
+    bool Won() const;
+
+    bool Lost() const;
 };
 
 
