@@ -8,10 +8,10 @@
 
 Server::Server() {
     //this->serverIp = sf::IpAddress::getLocalAddress();
-    this->serverIp = "188.25.100.57";
+    //this->serverIp = "86.121.166.13";
     this->hostBoard = new ServerBoard();
     this->guestBoard = new ServerBoard();
-    std::cout << this->serverIp << std::endl;
+    //std::cout << this->serverIp << std::endl;
 }
 
 Server & Server::getInstance()
@@ -27,16 +27,16 @@ sf::IpAddress Server::getServerIp() {
 
 void Server::startListeningHost() {
     if(this->listener.listen(53001) != sf::Socket::Done) {
-        //std::cout << "Can't start listening host!\n";
+        std::cout << "Can't start listening host!\n";
     } else {
-        //std::cout << "Now I Listen for Host!\n";
+        std::cout << "Now I Listen for Host!\n";
         acceptHost();
     }
 }
 
 void Server::acceptHost() {
     if(listener.accept(this->clientHost) != sf::Socket::Done) {
-        //std::cout << "Couldn't accept host\n";
+        std::cout << "Couldn't accept host\n";
         return;
     }
 

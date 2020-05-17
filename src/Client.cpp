@@ -30,7 +30,8 @@ void Client::hostGame() {
     double d;
 
     //this->server = new Server();
-    this->serverIp = Server::getInstance().getServerIp();
+    //this->serverIp = Server::getInstance().getServerIp();
+    this->serverIp = "25.55.199.191";
     std::thread thListenHost(&Server::startListeningHost, &Server::getInstance());
 
     sf::Socket::Status status = socket.connect(this->serverIp, 53001);
