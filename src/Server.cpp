@@ -7,11 +7,9 @@
 #include <thread>
 
 Server::Server() {
-    //this->serverIp = sf::IpAddress::getLocalAddress();
-    //this->serverIp = "86.121.166.13";
+    this->serverIp = sf::IpAddress::getLocalAddress();
     this->hostBoard = new ServerBoard();
     this->guestBoard = new ServerBoard();
-    //std::cout << this->serverIp << std::endl;
 }
 
 Server & Server::getInstance()
