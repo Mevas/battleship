@@ -11,23 +11,16 @@ public:
 
     virtual ~Player();
 
-    void fire(Coordinate coords);
-
-    void update(sf::RenderWindow *window, sf::Vector2i mousePosWindow);
+    void update(sf::Vector2i mousePosWindow);
 
     void render(sf::RenderTarget *target);
 
     Board *getBoard() const;
 
-    sf::RenderWindow *getWindow() const;
-
-    const sf::Vector2i &getMousePosWindow() const;
-
     unsigned int getNumber() const;
 
 private:
     sf::RenderWindow *window;
-    sf::Vector2i mousePosWindow;
     Board *board;
     unsigned number;
 };

@@ -59,18 +59,10 @@ void Button::render(sf::RenderTarget *target) {
     target->draw(text);
 }
 
-ButtonStates Button::getState() const {
-    return state;
-}
-
 bool Button::isPressed() const {
     if(this->clicking_is_prevented)
         return false;
     return state == ButtonStates::ACTIVE;
-}
-
-void Button::setState(ButtonStates state) {
-    Button::state = state;
 }
 
 void Button::preventClicking()

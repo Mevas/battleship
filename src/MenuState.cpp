@@ -34,7 +34,7 @@ MenuState::~MenuState() {
     delete exitBtn;
     delete ipTextbox;
     delete hostThread;
-};
+}
 
 void MenuState::update() {
     this->updateInput();
@@ -99,6 +99,3 @@ Textbox *MenuState::getIpTextbox() const {
     return ipTextbox;
 }
 
-Button *MenuState::getJoinBtn() const {
-    return joinBtn;
-}

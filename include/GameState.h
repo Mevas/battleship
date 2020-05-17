@@ -16,8 +16,6 @@ public:
 
     void render(sf::RenderTarget *target) override;
 
-    Board *getClickedBoard() const;
-
     Player *getPlayer();
 
     Player *getEnemy();

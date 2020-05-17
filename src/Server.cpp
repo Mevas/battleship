@@ -181,24 +181,16 @@ void Server::gameLoop() {
 }
 
 void Server::sendPacket(sf::TcpSocket *client, sf::Packet *packet, bool clear) {
-    //std::cout << SERVER_MESSAGE_PREFIX << "Sending package...\n";
     if((*client).send((*packet)) != sf::Socket::Done) {
-        //std::cout << SERVER_MESSAGE_PREFIX << "Can't Send Package to Client!\n";
         return;
     }
-
-    //std::cout << SERVER_MESSAGE_PREFIX << "Package Sent\n";
 
     if(clear)
         (*packet).clear();
 }
 
 void Server::receivePacket(sf::TcpSocket *client, sf::Packet *packet) {
-    //std::cout << SERVER_MESSAGE_PREFIX << "Receiving package...\n";
     if((*client).receive((*packet)) != sf::Socket::Done) {
-        //std::cout << SERVER_MESSAGE_PREFIX << "Can't Receive Package from Client!\n";
         return;
     }
-
-    //std::cout << SERVER_MESSAGE_PREFIX << "Package Received\n";
 }

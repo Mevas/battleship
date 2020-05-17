@@ -200,23 +200,15 @@ bool Client::readyToAttack() {
 }
 
 void Client::sendPacket(sf::Packet *packet) {
-    //std::cout << CLIENT_MESSAGE_PREFIX << "Sending package...\n";
     if(this->socket.send((*packet)) != sf::Socket::Done) {
-        //std::cout << CLIENT_MESSAGE_PREFIX << "Can't Send Package to Server!\n";
         return;
     }
-
-    //std::cout << CLIENT_MESSAGE_PREFIX << "Package Sent\n";
 }
 
 void Client::receivePacket(sf::Packet *packet) {
-    //std::cout << CLIENT_MESSAGE_PREFIX << "Receiving package...\n";
     if(this->socket.receive((*packet)) != sf::Socket::Done) {
-        //std::cout << CLIENT_MESSAGE_PREFIX << "Can't Receive Package from Server!\n";
         return;
     }
-
-    //std::cout << CLIENT_MESSAGE_PREFIX << "Package Received\n";
 }
 
 bool Client::getIsAttacking() const {

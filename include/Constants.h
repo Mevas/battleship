@@ -25,15 +25,12 @@ const short CLIENT_ATTACK_COMMAND = 102;
 const short CLIENT_SET_SHIP = 103;
 const short CLIENT_ALL_SHIP_SET = 104;
 
-const std::string CLIENT_MESSAGE_PREFIX = "CLIENT<<< ";
-const std::chrono::seconds HEARTBEAT_RATE = static_cast<std::chrono::seconds> (3);
-
 enum class Cardinals {
     NORTH, EAST, SOUTH, WEST
 };
 
 enum class HitTypes {
-    HIT = 0, MISSED = 1, DESTROYED = 2, DENIED = 3
+    HIT = 0, MISSED = 1, DESTROYED = 2
 };
 
 enum ShipTypes {

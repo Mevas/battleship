@@ -19,8 +19,6 @@ public:
 
     void addShip(Ship *ship);
 
-    void addShip(Coordinate head, unsigned length, Cardinals direction);
-
     void attack(Coordinate cell);
 
     void update(sf::Vector2i mousePosWindow);
@@ -33,19 +31,11 @@ public:
 
     const sf::Vector2i &getMousePosWindow() const;
 
-    Player &getPlayer() const;
-
-    unsigned int getSize() const;
-
     std::stack<Ship *> &getHeldShips();
 
     Coordinate getHoveredCell() const;
 
-    std::vector<Ship *> &getShips();
-
     void click();
-
-    bool isMouseInBounds() const;
 
     bool isInBounds(Coordinate coords) const;
 

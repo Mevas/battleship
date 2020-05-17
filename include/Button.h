@@ -23,10 +23,6 @@ public:
 
     void render(sf::RenderTarget *target);
 
-    void setState(ButtonStates state);
-
-    ButtonStates getState() const;
-
     bool isPressed() const;
 
     void preventClicking();

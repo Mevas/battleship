@@ -27,7 +27,7 @@ GameState::GameState(sf::RenderWindow *window, std::stack<State *> &states) : St
 GameState::~GameState() {
     delete this->player;
     delete this->enemy;
-};
+}
 
 void GameState::update() {
     this->updateInput();
@@ -47,8 +47,8 @@ void GameState::update() {
         }
     }
 
-    this->player->update(this->window, this->mousePosWindow);
-    this->enemy->update(this->window, this->mousePosWindow);
+    this->player->update(this->mousePosWindow);
+    this->enemy->update(this->mousePosWindow);
 }
 
 void GameState::updateInput() {
@@ -59,12 +59,6 @@ void GameState::render(sf::RenderTarget *target) {
     this->player->render(target);
     this->enemy->render(target);
     target->draw(text);
-}
-
-Board *GameState::getClickedBoard() const {
-    if(player->getBoard()->isMouseInBounds())
-        return player->getBoard();
-    return enemy->getBoard();
 }
 
 Player *GameState::getPlayer() {

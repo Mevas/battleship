@@ -70,14 +70,6 @@ const std::vector<Coordinate> &Ship::getCoords() const {
     return coords;
 }
 
-bool Ship::isDestroyed() {
-    return hitCoords.size() == length;
-}
-
-void Ship::markHit(Coordinate cell) {
-    hitCoords.insert(cell);
-}
-
 void Ship::rotate() {
     switch(direction) {
         case Cardinals::NORTH:

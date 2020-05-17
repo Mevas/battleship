@@ -8,8 +8,6 @@
 #include <SFML/Network.hpp>
 #include "ServerBoard.h"
 
-const std::string SERVER_MESSAGE_PREFIX = "SERVER<<< ";
-
 class Server {
 private:
     sf::IpAddress serverIp;

@@ -7,7 +7,6 @@
 #include "../include/ServerShip.h"
 
 ServerBoard::ServerBoard() {
-    this->size = globals::boardNumCells;
     this->shipCount = 0;
 }
 
@@ -57,22 +56,4 @@ HitTypes ServerBoard::attack(Coordinate cell) {
     return HitTypes::MISSED;
 }
 
-
-std::vector<ServerShip *> &ServerBoard::getShips() {
-    return ships;
-}
-
-bool ServerBoard::wouldCollide(std::vector<Coordinate> coords) const {
-    for(auto ship : ships) {
-        for(auto cell : ship->getCoords()) {
-            for(auto coord : coords) {
-                if(coord == cell) {
-                    return true;
-                }
-            }
-        }
-    }
-
-    return false;
-}
 

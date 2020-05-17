@@ -23,17 +23,12 @@ public:
 
     const std::vector<Coordinate> &getCoords() const;
 
-    bool isDestroyed();
-
-    void markHit(Coordinate cell);
-
     void rotate();
 
     bool place(Coordinate center);
 
 private:
     std::vector<Coordinate> coords;
-    std::set<Coordinate> hitCoords;
     int length;
     Cardinals direction;
 

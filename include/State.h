@@ -36,8 +36,6 @@ protected:
     bool wantsToQuit;
     std::stack<State *> &states;
 
-private:
-    std::vector<sf::Texture> textures;
 };
 
 

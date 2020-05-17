@@ -27,8 +27,6 @@ public:
 
     void markHit(Coordinate cell);
 
-    bool place(Coordinate center);
-
 private:
     std::vector<Coordinate> coords;
     std::set<Coordinate> hitCoords;

@@ -22,8 +22,6 @@ public:
 
     void render(sf::RenderTarget *target) override;
 
-    Button *getJoinBtn() const;
-
     Textbox *getIpTextbox() const;
 
 private:

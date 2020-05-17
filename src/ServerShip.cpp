@@ -27,32 +27,3 @@ void ServerShip::markHit(Coordinate cell) {
     hitCoords.insert(cell);
 }
 
-bool ServerShip::place(Coordinate center) {
-    Coordinate cell;
-    std::vector<Coordinate> coords;
-    for(int i = 0; i < length; i++) {
-        switch(direction) {
-            case Cardinals::NORTH:
-                cell = Coordinate(center.X(), center.Y() + i);
-                break;
-            case Cardinals::EAST:
-                cell = Coordinate(center.X() - i, center.Y());
-                break;
-            case Cardinals::SOUTH:
-                cell = Coordinate(center.X(), center.Y() - i);
-                break;
-            case Cardinals::WEST:
-                cell = Coordinate(center.X() + i, center.Y());
-                break;
-        }
-
-        coords.push_back(cell);
-    }
-
-    if(board->wouldCollide(coords)) {
-        return false;
-    }
-
-    this->coords = coords;
-    return true;
-}

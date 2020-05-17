@@ -111,20 +111,8 @@ const sf::Vector2i &Board::getMousePosWindow() const {
     return mousePosWindow;
 }
 
-Player &Board::getPlayer() const {
-    return player;
-}
-
-unsigned int Board::getSize() const {
-    return size;
-}
-
 std::stack<Ship *> &Board::getHeldShips() {
     return heldShips;
-}
-
-std::vector<Ship *> &Board::getShips() {
-    return ships;
 }
 
 void Board::click() {
@@ -169,11 +157,6 @@ bool Board::wouldCollide(std::vector<Coordinate> coords) const {
     }
 
     return false;
-}
-
-bool Board::isMouseInBounds() const {
-    return mousePosWindow.x > startX && mousePosWindow.y > startY && mousePosWindow.x < startX + globals::boardSize &&
-           mousePosWindow.y < startY + globals::boardSize;
 }
 
 Shadow *Board::getShadow() const {
