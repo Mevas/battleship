@@ -24,9 +24,16 @@ public:
 
     bool isPlacingShips() const;
 
+    void setCentralText(std::string text);
+
+    void initText();
+
 private:
     Player *player;
     Player *enemy;
+
+    sf::RectangleShape textPlate;
+    sf::Text text;
 };
 
 

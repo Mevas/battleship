@@ -51,7 +51,7 @@ void Server::acceptHost() {
 }
 
 void Server::startListeningGuest() {
-    if(this->listener.listen(53002) != sf::Socket::Done) {
+    if(this->listener.listen(53001) != sf::Socket::Done) {
         //std::cout << "Can't start listening guest!\n";
     } else {
         //std::cout << "Now I Listen for Guest!\n";
