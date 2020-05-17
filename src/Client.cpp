@@ -87,8 +87,7 @@ void Client::playGame() {
 
 void Client::addShip(Coordinate head, unsigned length, Cardinals direction) {
     sf::Packet addShipPacket;
-    //TODO: add op packet << (and >>) overload on class Coordinate
-    addShipPacket << CLIENT_SET_SHIP << head.X() << head.Y() << length << direction;
+    addShipPacket << CLIENT_SET_SHIP << head << length << direction;
     sendPacket(&addShipPacket);
 }
 

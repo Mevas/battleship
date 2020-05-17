@@ -15,6 +15,14 @@ short Coordinate::Y() const {
     return this->y;
 }
 
+sf::Packet &operator<<(sf::Packet &packet, const Coordinate &C) {
+    return packet << C.x << C.y;
+}
+
+sf::Packet &operator>>(sf::Packet &packet, Coordinate &C) {
+    return packet >> C.x >> C.y;
+}
+
 std::ostream &operator<<(std::ostream &output, const Coordinate &C) {
     output << "(" << C.X() << ", " << C.Y() << ")";
     return output;
@@ -22,6 +30,10 @@ std::ostream &operator<<(std::ostream &output, const Coordinate &C) {
 
 bool Coordinate::operator==(const Coordinate &rhs) const {
     return x == rhs.x && y == rhs.y;
+}
+
+bool Coordinate::operator>=(const Coordinate &rhs) const {
+    return x >= rhs.x && y >= rhs.y;
 }
 
 bool Coordinate::operator<(const Coordinate &rhs) const {

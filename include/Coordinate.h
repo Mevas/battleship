@@ -21,7 +21,13 @@ public:
 
     friend std::ostream &operator<<(std::ostream &output, const Coordinate &C);
 
+    friend sf::Packet &operator<<(sf::Packet &packet, const Coordinate &C);
+
+    friend sf::Packet &operator>>(sf::Packet &packet, Coordinate &C);
+
     bool operator==(Coordinate const &rhs) const;
+
+    bool operator>=(const Coordinate &rhs) const;
 
     bool operator<(const Coordinate &rhs) const;
 

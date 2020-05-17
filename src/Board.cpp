@@ -141,7 +141,7 @@ void Board::click() {
 }
 
 bool Board::isInBounds(Coordinate coords) const {
-    return coords.X() >= 0 && coords.Y() >= 0 && coords.X() < globals::boardNumCells &&
+    return coords >= Coordinate(0, 0) && coords.X() < globals::boardNumCells &&
            coords.Y() < globals::boardNumCells;
 }
 
