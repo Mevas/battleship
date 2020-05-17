@@ -12,6 +12,7 @@ Client::Client()
 {
     this->is_attacking = false;
     this->defendThread = nullptr;
+    this->waitEnemyThread = nullptr;
 }
 
 Client & Client::getInstance()
@@ -103,6 +104,9 @@ void Client::endShipPlacement() {
     sf::Packet endShipPlacementPacket;
     endShipPlacementPacket << CLIENT_ALL_SHIP_SET;
     sendPacket(& endShipPlacementPacket);
+    this->waitEnemyThread = new std::thread([this] {
+        playGame();
+    });
 }
 
 
@@ -218,6 +222,13 @@ bool Client::readyToAttack()
         this->defendThread->join();
         delete this->defendThread;
         this->defendThread = nullptr;
+        if(this->waitEnemyThread != nullptr)
+        {
+            this->waitEnemyThread->join();
+            delete this->waitEnemyThread;
+            this->waitEnemyThread = nullptr;
+        }
+
         return true;
     }
 

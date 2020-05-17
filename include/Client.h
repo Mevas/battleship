@@ -17,6 +17,7 @@ private:
     sf::TcpSocket socket;
     sf::IpAddress serverIp;
     std::thread * defendThread;
+    std::thread * waitEnemyThread;
     std::atomic<bool> is_attacking {};
     Shadow *playerShadow;
     Shadow *enemyShadow;

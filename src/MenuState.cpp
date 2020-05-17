@@ -45,7 +45,7 @@ void MenuState::update(const double &deltaTime) {
         delete this->hostThread;
         this->hostThread = new std::thread([] {
             std::thread thGameLoop(&Server::gameLoop, &Server::getInstance());
-            Client::getInstance().playGame();
+            //Client::getInstance().playGame();
             thGameLoop.join();
         });
         this->ready_for_next_state = false;
@@ -88,7 +88,7 @@ void MenuState::updateButtons() {
         std::cout << ipTextbox->getText() << std::endl;
         bool joined = Client::getInstance().joinGame(ipTextbox->getText());
         if(joined) {
-            Client::getInstance().playGame();
+            //Client::getInstance().playGame();
             this->states.push(new GameState(this->window, this->states));
         }
     }

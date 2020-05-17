@@ -81,21 +81,6 @@ void Server::acceptGuest() {
 }
 
 void Server::gameLoop() {
-    sf::Packet packetAttacker;
-    sf::Packet packetDefender;
-    //TODO: randomize first move
-    sf::TcpSocket *attacker = &this->clientHost;
-    sf::TcpSocket *defender = &this->clientGuest;
-    ServerBoard *attackerBoard = this->hostBoard;
-    ServerBoard *defenderBoard = this->guestBoard;
-
-    packetAttacker << SERVER_MSG_FIRST_MOVE;
-    packetDefender << SERVER_MSG_SECOND_MOVE;
-    sendPacket(attacker, &packetAttacker);
-    sendPacket(defender, &packetDefender);
-    packetAttacker.clear();
-    packetDefender.clear();
-
     std::thread thHostPlaceBoard([this] {
         sf::Packet packetHost;
         short shipHeadX, shipHeadY;
@@ -146,6 +131,21 @@ void Server::gameLoop() {
 
     thHostPlaceBoard.join();
     thGuestPlaceBoard.join();
+
+    sf::Packet packetAttacker;
+    sf::Packet packetDefender;
+    //TODO: randomize first move
+    sf::TcpSocket *attacker = &this->clientHost;
+    sf::TcpSocket *defender = &this->clientGuest;
+    ServerBoard *attackerBoard = this->hostBoard;
+    ServerBoard *defenderBoard = this->guestBoard;
+
+    packetAttacker << SERVER_MSG_FIRST_MOVE;
+    packetDefender << SERVER_MSG_SECOND_MOVE;
+    sendPacket(attacker, &packetAttacker);
+    sendPacket(defender, &packetDefender);
+    packetAttacker.clear();
+    packetDefender.clear();
 
     short message;
     bool continueLoop = true;
