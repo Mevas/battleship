@@ -57,7 +57,7 @@ bool Client::joinGame(sf::IpAddress serverIp) {
 //    std::cout << "Server Ip?\n";
 //    std::cin >> this->serverIp;
     this->serverIp = serverIp;
-    sf::Socket::Status status = socket.connect(this->serverIp, 53002);
+    sf::Socket::Status status = socket.connect(this->serverIp, 53001);
 
     if(status != sf::Socket::Done) {
         std::cout << "No Host for me:(\n";

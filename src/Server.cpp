@@ -7,8 +7,8 @@
 #include <thread>
 
 Server::Server() {
-    this->serverIp = sf::IpAddress::getLocalAddress();
-    //this->serverIp = "82.76.175.95";
+    //this->serverIp = sf::IpAddress::getLocalAddress();
+    this->serverIp = "188.25.100.57";
     this->hostBoard = new ServerBoard();
     this->guestBoard = new ServerBoard();
     std::cout << this->serverIp << std::endl;
@@ -51,7 +51,7 @@ void Server::acceptHost() {
 }
 
 void Server::startListeningGuest() {
-    if(this->listener.listen(53002) != sf::Socket::Done) {
+    if(this->listener.listen(53001) != sf::Socket::Done) {
         //std::cout << "Can't start listening guest!\n";
     } else {
         //std::cout << "Now I Listen for Guest!\n";
