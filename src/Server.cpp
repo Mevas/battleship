@@ -3,7 +3,6 @@
 //
 #include "../include/Constants.h"
 #include "../include/Server.h"
-#include <iostream>
 #include <thread>
 
 Server::Server() {

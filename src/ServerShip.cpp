@@ -2,15 +2,11 @@
 // Created by tudor on 5/11/2020.
 //
 
-#include <iostream>
 #include "../include/ServerShip.h"
-#include "../include/Globals.h"
 #include "../include/ServerBoard.h"
-#include "../include/Player.h"
 
-ServerShip::ServerShip(ServerBoard *board, Cardinals direction, unsigned length) : board(board), direction(direction), length(length) {
-
-}
+ServerShip::ServerShip(ServerBoard *board, Cardinals direction, unsigned length) : board(board), direction(direction),
+                                                                                   length(length) {}
 
 ServerShip::ServerShip(std::vector<Coordinate> coords, ServerBoard *board, Cardinals direction) : board(board), direction(direction) {
     this->length = coords.size();

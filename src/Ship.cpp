@@ -1,4 +1,3 @@
-#include <iostream>
 #include "../include/Ship.h"
 #include "../include/Globals.h"
 #include "../include/Board.h"

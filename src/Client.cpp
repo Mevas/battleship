@@ -4,9 +4,6 @@
 
 #include "../include/Constants.h"
 #include "../include/Client.h"
-#include "../include/Game.h"
-#include <iostream>
-#include <thread>
 
 Client::Client() {
     this->is_attacking = false;
