@@ -74,5 +74,16 @@ public:
     bool Lost() const;
 };
 
+struct ServerConnectionException : public std::exception {
+    const char *what() const throw() {
+        return "Connection to server was lost";
+    }
+};
+
+struct InvalidIPException : public std::exception {
+    const char *what() const throw() {
+        return "The provided IP address was invalid";
+    }
+};
 
 #endif //BATTLESHIP_CLIENT_CLIENT_H

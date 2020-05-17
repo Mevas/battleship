@@ -60,8 +60,12 @@ bool Client::joinGame(sf::IpAddress serverIp) {
     sf::Socket::Status status = socket.connect(this->serverIp, 53001);
 
     if(status != sf::Socket::Done) {
-        std::cout << "No host for me :(\n";
-        return false;
+        try {
+            throw InvalidIPException();
+        } catch(InvalidIPException &e) {
+            std::cout << e.what();
+            return false;
+        }
     }
     receivePacket(&packet);
     packet >> s;
@@ -136,7 +140,6 @@ void Client::Defend() {
     }
 }
 
-//return something like  HitTypes? Dunno...I think it's better for client obj to take action
 void Client::ResolveAttack() {
     short messageFromServer, messageWin;
     sf::Packet packetToReceive, winPacket;
@@ -162,8 +165,11 @@ void Client::ResolveAttack() {
             break;
         }
         default: {
-            std::cout << "Connection to server was lost";
-            break;
+            try {
+                throw ServerConnectionException();
+            } catch(ServerConnectionException &e) {
+                std::cout << e.what();
+            }
         }
     }
 
